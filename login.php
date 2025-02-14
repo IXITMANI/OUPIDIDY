@@ -29,7 +29,11 @@ if ($stmt->num_rows > 0) {
     if (password_verify($pass, $hashed_password)) {
         session_start();
         $_SESSION['username'] = $user;
-        header("Location: user.php");
+        if ($user === 'admin') {
+            header("Location: admin.php");
+        } else {
+            header("Location: user.php");
+        }
         exit();
     } else {
         echo "Invalid password";
