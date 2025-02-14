@@ -27,7 +27,10 @@ if ($stmt->num_rows > 0) {
     $stmt->bind_result($hashed_password);
     $stmt->fetch();
     if (password_verify($pass, $hashed_password)) {
-        echo "Login successful";
+        session_start();
+        $_SESSION['username'] = $user;
+        header("Location: user.php");
+        exit();
     } else {
         echo "Invalid password";
     }
