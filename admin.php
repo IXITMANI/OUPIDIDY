@@ -4,6 +4,35 @@ if (!isset($_SESSION['username']) || $_SESSION['username'] !== 'admin') {
     header("Location: login.html");
     exit();
 }
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "MyUsers";
+
+// Создаем соединение
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+// Проверяем соединение
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+// Удаление пользователя
+if (isset($_GET['delete'])) {
+    $id = $_GET['delete'];
+    $sql = "DELETE FROM users WHERE id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("i", $id);
+    $stmt->execute();
+    $stmt->close();
+    header("Location: admin.php");
+    exit();
+}
+
+// Получение списка пользователей
+$sql = "SELECT id, username FROM users";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -19,6 +48,27 @@ if (!isset($_SESSION['username']) || $_SESSION['username'] !== 'admin') {
 <body>
     <h1>Welcome, Admin!</h1>
     <p>This is the admin page.</p>
+    <h2>Manage Users</h2>
+    <table border="1">
+        <tr>
+            <th>ID</th>
+            <th>Username</th>
+            <th>Action</th>
+        </tr>
+        <?php while ($row = $result->fetch_assoc()): ?>
+        <tr>
+            <td><?php echo $row['id']; ?></td>
+            <td><?php echo $row['username']; ?></td>
+            <td>
+                <a href="admin.php?delete=<?php echo $row['id']; ?>">Delete</a>
+            </td>
+        </tr>
+        <?php endwhile; ?>
+    </table>
     <a href="logout.php"><button>Logout</button></a>
 </body>
 </html>
+
+<?php
+$conn->close();
+?>
