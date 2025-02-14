@@ -27,3 +27,4 @@ if ($conn->query($sql) === TRUE) {
 
 $conn->close();
 ?>
+<a href="Main.html">Back</a>
