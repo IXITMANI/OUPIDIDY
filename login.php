@@ -36,10 +36,10 @@ if ($stmt->num_rows > 0) {
         }
         exit();
     } else {
-        echo "Invalid password";
+        echo "Неверный логин или пароль";
     }
 } else {
-    echo "No user found with that username";
+    echo "Пользователя с таким именем не существует";
 }
 
 $stmt->close();
