@@ -40,4 +40,5 @@ if ($stmt->num_rows > 0) {
 $stmt->close();
 $conn->close();
 ?>
-<a href="Main.html">Back</a>
+<br>
+<h2><a href="Main.html"><button>Back</button></a></h2>
