@@ -14,7 +14,7 @@ Itmo Web-programming
 ### Шаг 2: Настройка базы данных
 
 1. Откройте phpMyAdmin, перейдя по адресу `http://localhost/phpmyadmin`.
-2. Создайте новую базу данных, например `mydatabase`.
+2. Создайте новую базу данных `MyUsers`.
 3. Выполните следующий SQL-запрос для создания таблицы `users`:
 
     ```sql
@@ -32,6 +32,8 @@ Itmo Web-programming
 ### Шаг 3: Размещение файлов проекта
 
     Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
+    1. Перейдите в папку C:\xampp\htdocs\ в терминаале(в консольке)
+    2. Напишите команду git clone https://github.com/IXITMANI/OUPIDIDY
 ## Использование
 
 1. Откройте браузер и перейдите по адресу `http://localhost/OUPIDIDY/Main.html`.
