@@ -31,7 +31,7 @@ if (isset($_GET['delete'])) {
 }
 
 // Получение списка пользователей
-$sql = "SELECT id, username FROM users";
+$sql = "SELECT id, username, email, phone, age, reg_date FROM users";
 $result = $conn->query($sql);
 ?>
 
@@ -53,12 +53,20 @@ $result = $conn->query($sql);
         <tr>
             <th>ID</th>
             <th>Username</th>
+            <th>Email</th>
+            <th>Phone</th>
+            <th>Age</th>
+            <th>Registration Date</th>
             <th>Action</th>
         </tr>
         <?php while ($row = $result->fetch_assoc()): ?>
         <tr>
             <td><?php echo $row['id']; ?></td>
             <td><?php echo $row['username']; ?></td>
+            <td><?php echo $row['email']; ?></td>
+            <td><?php echo $row['phone']; ?></td>
+            <td><?php echo $row['age']; ?></td>
+            <td><?php echo $row['reg_date']; ?></td>
             <td>
                 <a href="admin.php?delete=<?php echo $row['id']; ?>">Delete</a>
             </td>
