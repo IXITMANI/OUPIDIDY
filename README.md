@@ -25,7 +25,8 @@ Itmo Web-programming
         reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         email VARCHAR(255) NOT NULL,
         phone INT(20) NOT NULL,
-        age INT(5) NOT NULL
+        age INT(5) NOT NULL,
+        role VARCHAR(255)
     );
     ```
 
