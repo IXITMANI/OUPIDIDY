@@ -1,21 +1,18 @@
+<!DOCTYPE html>
 <html>
 <head>
-    <meta charset='utf-8'>
-    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
-    <title>Register</title>
-    <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='register.css'>
-    <script src='register.js'></script>
+<meta charset="utf-8">
+<title>Регистрация</title>
 </head>
 <body>
-    <form action="register.php" method="post">
-        <label for="username">Username:</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Password:</label>
-        <input type="password" id="password" name="password" required><br>
-        <input type="submit" value="Register">
-    </form>
-    <a href = 'login.html'><button>Login</button></a>
-    <section><h2><a href="Main.html">Back</a></h2></section>
+<form method="post" action="register.php">
+  Имя пользователя: <input type="text" name="username" required><br>
+  Пароль: <input type="password" name="password" required><br>
+  Повторите пароль: <input type="password" name="password_confirm" required><br>
+  Номер телефона: <input type="tel" name="phone" required><br>
+  Email: <input type="email" name="email" required><br>
+  Возраст: <input type="number" name="age" min="16" max="121" required><br>
+  <input type="submit" value="Зарегистрироваться">
+</form>
 </body>
 </html>
