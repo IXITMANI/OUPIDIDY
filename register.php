@@ -46,7 +46,7 @@ if ($stmt->num_rows > 0) {
 } else {
     echo "попытка вас зарегестрировать";
     $stmt = $conn->prepare("INSERT INTO users (username, password,email, phone,  age) VALUES (?, ?, ?, ?, ?)");
-    $stmt->bind_param("sssss", $user, $pass, $email, $phone, $age);
+    $stmt->bind_param($user, $pass, $email, $phone, $age);
 
     if ($stmt->execute() === TRUE) {
         echo "Регистрация прошла успешно!";
