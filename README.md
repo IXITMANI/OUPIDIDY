@@ -22,7 +22,10 @@ Itmo Web-programming
         id INT(6) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
         username VARCHAR(30) NOT NULL,
         password VARCHAR(255) NOT NULL,
-        reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+        reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        email VARCHAR(255) NOT NULL,
+        phone INT(20) NOT NULL,
+        age INT(5) NOT NULL
     );
     ```
 
