@@ -37,7 +37,7 @@ if (!is_numeric($age) || $age < 16 || $age > 121) {
 
 $sql = "SELECT id FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
-$stmt->bind_param("s", $user);
+$stmt->bind_param("s", var: $user);
 $stmt->execute();
 $stmt->store_result();
 
