@@ -13,7 +13,7 @@ Itmo Web-programming
 
 ### Шаг 2: Настройка базы данных
 
-1. Откройте phpMyAdmin, перейдя по адресу `http://localhost/phpmyadmin`.
+1. Откройте phpMyAdmin, перейдя по адресу <a href=http://localhost/phpmyadmin>`http://localhost/phpmyadmin`<\a>.
 2. Создайте новую базу данных, например `mydatabase`.
 3. Выполните следующий SQL-запрос для создания таблицы `users`:
 
