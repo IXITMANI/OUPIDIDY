@@ -24,7 +24,7 @@ Itmo Web-programming
         password VARCHAR(255) NOT NULL,
         reg_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
         email VARCHAR(255) NOT NULL,
-        phone INT(20) NOT NULL,
+        phone VARCHAR(20) NOT NULL,
         age INT(5) NOT NULL,
         role VARCHAR(255)
     );
