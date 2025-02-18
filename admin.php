@@ -73,52 +73,147 @@ $result = $conn->query($sql);
     <title>Admin Page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='admin.css'>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            width: 80%;
+            margin: auto;
+            overflow: hidden;
+        }
+        header {
+            background: #333;
+            color: #fff;
+            padding-top: 30px;
+            min-height: 70px;
+            border-bottom: #77aaff 3px solid;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            text-transform: uppercase;
+            font-size: 16px;
+        }
+        header ul {
+            padding: 0;
+            list-style: none;
+        }
+        header li {
+            float: left;
+            display: inline;
+            padding: 0 20px 0 20px;
+        }
+        header #branding {
+            float: left;
+        }
+        header #branding h1 {
+            margin: 0;
+        }
+        header nav {
+            float: right;
+            margin-top: 10px;
+        }
+        .error-message {
+            color: red;
+            margin: 20px 0;
+        }
+        table {
+            width: 100%;
+            margin: 20px 0;
+            border-collapse: collapse;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        .btn {
+            display: inline-block;
+            color: #fff;
+            background-color: #333;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .btn:hover {
+            background-color: #555;
+        }
+    </style>
 </head>
 <body>
-    <h1>Welcome, Admin!</h1>
-    <p>This is the admin page.</p>
-    <h2>Manage Users</h2>
-    <?php if ($error_message): ?>
-        <div class="error-message">
-            <p><?php echo $error_message; ?></p>
+    <header>
+        <div class="container">
+            <div id="branding">
+                <h1>Admin Page</h1>
+            </div>
+            <nav>
+                <ul>
+                    <li><a href="logout.php" class="btn">Logout</a></li>
+                </ul>
+            </nav>
         </div>
-    <?php endif; ?>
-    <table border="1">
-        <tr>
-            <th>ID</th>
-            <th>Username</th>
-            <th>Email</th>
-            <th>Phone</th>
-            <th>Age</th>
-            <th>Registration Date</th>
-            <th>Role</th>
-            <th>Action</th>
-        </tr>
-        <?php while ($row = $result->fetch_assoc()): ?>
-        <tr>
-            <td><?php echo $row['id']; ?></td>
-            <td><?php echo $row['username']; ?></td>
-            <td><?php echo $row['email']; ?></td>
-            <td><?php echo $row['phone']; ?></td>
-            <td><?php echo $row['age']; ?></td>
-            <td><?php echo $row['reg_date']; ?></td>
-            <td>
-                <form method="post" action="admin.php">
-                    <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                    <select name="role">
-                        <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
-                        <option value="admin" <?php if ($row['role'] == 'admin') echo 'selected'; ?>>Admin</option>
-                    </select>
-                    <input type="submit" name="update_role" value="Update">
-                </form>
-            </td>
-            <td>
-                <a href="admin.php?delete=<?php echo $row['id']; ?>">Delete</a>
-            </td>
-        </tr>
-        <?php endwhile; ?>
-    </table>
-    <a href="logout.php"><button>Logout</button></a>
+    </header>
+    <div class="container">
+        <h1>Welcome, Admin!</h1>
+        <p>This is the admin page.</p>
+        <h2>Manage Users</h2>
+        <?php if ($error_message): ?>
+            <div class="error-message">
+                <p><?php echo $error_message; ?></p>
+            </div>
+        <?php endif; ?>
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Username</th>
+                <th>Email</th>
+                <th>Phone</th>
+                <th>Age</th>
+                <th>Registration Date</th>
+                <th>Role</th>
+                <th>Action</th>
+            </tr>
+            <?php while ($row = $result->fetch_assoc()): ?>
+            <tr>
+                <td><?php echo $row['id']; ?></td>
+                <td><?php echo $row['username']; ?></td>
+                <td><?php echo $row['email']; ?></td>
+                <td><?php echo $row['phone']; ?></td>
+                <td><?php echo $row['age']; ?></td>
+                <td><?php echo $row['reg_date']; ?></td>
+                <td>
+                    <form method="post" action="admin.php">
+                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                        <select name="role">
+                            <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
+                            <option value="admin" <?php if ($row['role'] == 'admin') echo 'selected'; ?>>Admin</option>
+                        </select>
+                        <input type="submit" name="update_role" value="Update">
+                    </form>
+                </td>
+                <td>
+                    <a href="admin.php?delete=<?php echo $row['id']; ?>" class="btn">Delete</a>
+                </td>
+            </tr>
+            <?php endwhile; ?>
+        </table>
+    </div>
 </body>
 </html>
 
