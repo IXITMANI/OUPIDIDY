@@ -17,19 +17,20 @@ $user = $_POST['username'];
 $pass = $_POST['password'];
 
 // SQL-запрос для получения данных пользователя
-$sql = "SELECT password FROM users WHERE username = ?";
+$sql = "SELECT password, role FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $user);
 $stmt->execute();
 $stmt->store_result();
 
 if ($stmt->num_rows > 0) {
-    $stmt->bind_result($hashed_password);
+    $stmt->bind_result($hashed_password, $role);
     $stmt->fetch();
     if (password_verify($pass, $hashed_password)) {
         session_start();
         $_SESSION['username'] = $user;
-        if ($user === 'admin') {
+        $_SESSION['role'] = $role;
+        if ($role === 'admin') {
             header("Location: admin.php");
         } else {
             header("Location: user.php");
