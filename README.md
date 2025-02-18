@@ -31,10 +31,9 @@ Itmo Web-programming
     ```
 
 ### Шаг 3: Размещение файлов проекта
-
-1. Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
-2. Перейдите в папку `C:\xampp\htdocs` в терминале (консоли).
-3. Напишите команду `git clone https://github.com/IXITMANI/OUPIDIDY`.
+ Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
+    1. Перейдите в папку `C:\xampp\htdocs` в терминале (консоли).
+    2. Напишите команду `git clone https://github.com/IXITMANI/OUPIDIDY`.
 
 ## Использование
 
