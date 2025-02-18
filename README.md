@@ -26,7 +26,7 @@ Itmo Web-programming
         email VARCHAR(255) NOT NULL,
         phone VARCHAR(20) NOT NULL,
         age INT(5) NOT NULL,
-        role VARCHAR(255) DEFAULT 'user'
+        role VARCHAR(255) DEFAULT 'user',
     );
     ```
 
