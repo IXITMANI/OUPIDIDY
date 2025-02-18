@@ -154,6 +154,17 @@ $result = $conn->query($sql);
         .btn:hover {
             background-color: #555;
         }
+        .update-btn {
+            background-color: #6c757d;
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .update-btn:hover {
+            background-color: #5a6268;
+        }
     </style>
 </head>
 <body>
@@ -170,8 +181,7 @@ $result = $conn->query($sql);
         </div>
     </header>
     <div class="container">
-        <h1>Welcome, Admin!</h1>
-        <p>This is the admin page.</p>
+        <h1>Привет, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
         <h2>Manage Users</h2>
         <?php if ($error_message): ?>
             <div class="error-message">
@@ -190,27 +200,29 @@ $result = $conn->query($sql);
                 <th>Action</th>
             </tr>
             <?php while ($row = $result->fetch_assoc()): ?>
-            <tr>
-                <td><?php echo $row['id']; ?></td>
-                <td><?php echo $row['username']; ?></td>
-                <td><?php echo $row['email']; ?></td>
-                <td><?php echo $row['phone']; ?></td>
-                <td><?php echo $row['age']; ?></td>
-                <td><?php echo $row['reg_date']; ?></td>
-                <td>
-                    <form method="post" action="admin.php">
-                        <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
-                        <select name="role">
-                            <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
-                            <option value="admin" <?php if ($row['role'] == 'admin') echo 'selected'; ?>>Admin</option>
-                        </select>
-                        <input type="submit" name="update_role" value="Update">
-                    </form>
-                </td>
-                <td>
-                    <a href="admin.php?delete=<?php echo $row['id']; ?>" class="btn">Delete</a>
-                </td>
-            </tr>
+                <?php if ($row['username'] !== $_SESSION['username']): ?>
+                    <tr>
+                        <td><?php echo $row['id']; ?></td>
+                        <td><?php echo $row['username']; ?></td>
+                        <td><?php echo $row['email']; ?></td>
+                        <td><?php echo $row['phone']; ?></td>
+                        <td><?php echo $row['age']; ?></td>
+                        <td><?php echo $row['reg_date']; ?></td>
+                        <td>
+                            <form method="post" action="admin.php">
+                                <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
+                                <select name="role">
+                                    <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
+                                    <option value="admin" <?php if ($row['role'] == 'admin') echo 'selected'; ?>>Admin</option>
+                                </select>
+                                <input type="submit" name="update_role" value="Update" class="update-btn">
+                            </form>
+                        </td>
+                        <td>
+                            <a href="admin.php?delete=<?php echo $row['id']; ?>" class="btn">Delete</a>
+                        </td>
+                    </tr>
+                <?php endif; ?>
             <?php endwhile; ?>
         </table>
     </div>
