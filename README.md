@@ -13,8 +13,8 @@ Itmo Web-programming
 
 ### Шаг 2: Настройка базы данных
 
-1. Откройте phpMyAdmin, перейдя по адресу <a href=http://localhost/phpmyadmin>`http://localhost/phpmyadmin`</a>.
-2. Создайте новую базу данных, например `mydatabase`.
+1. Откройте phpMyAdmin, перейдя по адресу [http://localhost/phpmyadmin](http://localhost/phpmyadmin).
+2. Создайте новую базу данных, например `MyUsers`.
 3. Выполните следующий SQL-запрос для создания таблицы `users`:
 
     ```sql
@@ -26,21 +26,21 @@ Itmo Web-programming
         email VARCHAR(255) NOT NULL,
         phone VARCHAR(20) NOT NULL,
         age INT(5) NOT NULL,
-        role VARCHAR(255)
+        role VARCHAR(255) DEFAULT 'user',
     );
     ```
 
 ### Шаг 3: Размещение файлов проекта
+ Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
+    1. Перейдите в папку `C:\xampp\htdocs` в терминале (консоли).
+    2. Напишите команду `git clone https://github.com/IXITMANI/OUPIDIDY`.
 
-    Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
-    1. перейдите в папку 'C:\xampp\htdocs' в терминале(консоли)
-    2. напишите комманду git clone https://github.com/IXITMANI/OUPIDIDY
 ## Использование
 
 1. Откройте браузер и перейдите по адресу `http://localhost/OUPIDIDY/Main.html`.
 2. На главной странице нажмите ссылку "Регистрация", чтобы перейти на страницу регистрации.
 3. Заполните форму регистрации и нажмите кнопку "Зарегистрироваться".
-4. Если регистрация прошла успешно, вы увидите сообщение "New record created successfully".
+4. Если регистрация прошла успешно, вы будете перенаправлены на страницу пользователя.
 
 ## Структура проекта
 
@@ -50,5 +50,14 @@ C:/xampp/htdocs/OUPIDIDY/
 ├── register.html             # Страница регистрации
 ├── register.php              # Обработчик регистрации на PHP
 ├── login.html                # Страница входа
-├── SoftwereDeveloper.html    # Страница профессии "Software Developer"
+├── login.php                 # Обработчик входа на PHP
+├── user.php                  # Страница пользователя
+├── admin.php                 # Страница администратора
+├── logout.php                # Обработчик выхода
+├── SoftwareDeveloper.html    # Страница профессии "Software Developer"
+├── DataScientist.html        # Страница профессии "Data Scientist"
+├── WebDeveloper.html         # Страница профессии "Web Developer"
+├── Cybersecurity.html        # Страница профессии "Cybersecurity Specialist"
+├── BlackDevOps.html          # Страница профессии "DevOps Specialist"
 └── styles.css                # Стили (опционально)
+```
