@@ -4,19 +4,15 @@ $username = "root";
 $password = "";
 $dbname = "MyUsers";
 
-// Создаем соединение
 $conn = new mysqli($servername, $username, $password, $dbname);
 
-// Проверяем соединение
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 
-// Получаем данные из формы
 $user = $_POST['username'];
 $pass = $_POST['password'];
 
-// SQL-запрос для получения данных пользователя
 $sql = "SELECT password, role FROM users WHERE username = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("s", $user);
@@ -47,4 +43,3 @@ $stmt->close();
 $conn->close();
 ?>
 <br>
-<h2><a href="Main.html"><button>Back</button></a></h2>

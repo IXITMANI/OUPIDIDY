@@ -1,0 +1,156 @@
+header {
+    margin: -1;
+    padding: -1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #313242;
+    color: white;
+    ;
+}
+
+
+.main-shit {
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
+    color: #150b0c;
+    max-width: 1200px;
+    margin: 0 auto;
+    background-color: #fff9f9;
+}
+
+a {
+    text-decoration: none;
+}
+
+
+nav {
+    margin-top: 1rem;
+}
+
+nav button {
+    background-color: #66677e;
+    border: none;
+    padding: 10px 20px;
+    margin: 0 10px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    border-radius: 5px;
+}
+
+nav button:hover {
+    background-color: #D15955;
+}
+
+#professions {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 20px;
+    margin-top: 2rem;
+}
+
+article {
+    background-color: #737392;
+    color: #ecf0f1;
+    padding: 20px;
+    border-radius: 25px;
+    transition: transform 0.3s;
+}
+
+article:hover {
+    transform: translateY(2px);
+    box-shadow: -7px 7px #D15955;
+    background-color: #505168;
+    color: #ecf0f1;
+}
+
+article h3 {
+    color: #f2ecec;
+    margin-top: 0;
+}
+
+article a {
+    text-decoration: none;
+    color: inherit;
+}
+
+h2 {
+    text-align: center;
+}
+
+.SoftwareDeveloper:hover {
+    transform: translateY(2px);
+    box-shadow: -6px 6px #F7B32B;
+}
+
+.DataScientist:hover {
+    transform: translateY(2px);
+    box-shadow: -6px 6px #85C7F2;
+}
+
+.WebDeveloper:hover {
+    transform: translateY(2px);
+    box-shadow: -6px 6px #DD8944;
+}
+
+.CyberSecurity:hover {
+    transform: translateY(2px);
+    box-shadow: -6px 6px #45CA6D;
+}
+
+.UIDesigner:hover {
+    transform: translateY(2px);
+    box-shadow: -6px 6px #AD5891; 
+}
+
+
+
+
+footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f8f9fa;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    width: 100%;
+}
+
+header h1, footer p {
+    text-align: center;
+}
+
+
+header nav a, footer a {
+    text-decoration: none;
+    color: #333;
+}
+
+header nav a:hover, footer a:hover {
+    color: #212529;
+}
+
+header nav button, footer button {
+
+    background-color: #4CAF50;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+header nav button:hover, footer button:hover {
+    background-color: #3e8e41;
+}
+
+footer {
+    background-color: #313242;
+    right:0;
+    bottom:0;
+    width:99%;
+    height:14px;
+   }    
+
+footer p{
+    color: #fff;
+}

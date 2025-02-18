@@ -1,0 +1,15 @@
+h1 {
+    color: #F7B32B;
+    padding-right: 0px;
+}
+
+
+
+.back-button {
+    background-color: #F7B32B8C;
+}
+
+.back-button:hover {
+    background-color: #e2a427d7;
+    transition: 400ms;
+}

@@ -1,0 +1,13 @@
+h1 {
+    color: #DD8944;
+}
+
+
+.back-button {
+    background-color: #dd89447a;
+}
+
+.back-button:hover {
+    background-color: #dd8944b9;
+    transition: 400ms;
+}
