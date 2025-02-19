@@ -213,6 +213,8 @@ $result = $conn->query($sql);
                                 <input type="hidden" name="user_id" value="<?php echo $row['id']; ?>">
                                 <select name="role">
                                     <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
+                                    <option value="critic" <?php if ($row['role'] == 'critic') echo 'selected'; ?>>Critic</option>
+                                    <option value="adviser" <?php if ($row['role'] == 'adviser') echo 'selected'; ?>>Adviser</option>
                                     <option value="admin" <?php if ($row['role'] == 'admin') echo 'selected'; ?>>Admin</option>
                                 </select>
                                 <input type="submit" name="update_role" value="Update" class="update-btn">
