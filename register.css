@@ -1,4 +1,6 @@
 h1{
+    text-align: center;
+    padding-left: 0;
     color: aliceblue;
 }
 
@@ -18,13 +20,11 @@ body {
 }
 
 form {
+    padding-top: 30px;
     margin-bottom: 20px;
 }
 
-label {
-    display: block;
-    margin-top: 10px;
-}
+
 
 input[type="text"],
 input[type="password"],
@@ -68,4 +68,13 @@ input[type="submit"]:hover {
 .register:hover {
     background-color: rgba(75, 140, 155, 0.874);
     transition: 400ms;
+}
+
+body{
+    margin-left: 33%;
+}
+
+label {
+    margin-top: 10px;
+    margin-right: 49px;
 }

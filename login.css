@@ -1,4 +1,6 @@
 h1{
+    text-align: center;
+    padding-left: 0;
     color: aliceblue;
 }
 
@@ -11,18 +13,13 @@ h1{
     transition: 400ms;
 }
 
-body {
-    font-family: sans-serif;
-    line-height: 1.6;
-    margin: 20px;
-}
 
 form {
+    padding-top: 30px;
     margin-bottom: 20px;
 }
 
 label {
-    display: block;
     margin-top: 10px;
 }
 
@@ -65,4 +62,16 @@ input[type="submit"]:hover {
 .register:hover {
     background-color: rgba(75, 140, 155, 0.874);
     transition: 400ms;
+}
+
+body{
+    font-family: sans-serif;
+    line-height: 1.6;
+    padding: auto;
+    margin-left: 33%;
+}
+
+label {
+    margin-top: 10px;
+    margin-right: 49px;
 }
