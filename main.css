@@ -128,14 +128,14 @@ footer p {
 }
 
 header nav button {
-    background-color: #8897B2;
+    background-color: #737392;
     color: white;
     border-radius: 5px;
     cursor: pointer;
 }
 
 header nav button:hover{
-    background-color: #667081;
+    background-color: #505168;
 } 
 
 

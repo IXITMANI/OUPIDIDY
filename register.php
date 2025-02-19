@@ -86,15 +86,18 @@ $conn->close();
     <title>Register</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='SoftwareDeveloper.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='register.css'>
+
 </head>
 <body>
     <h1>Регистрация</h1>
     <?php if (!empty($error_message)): ?>
-        <div class="error-message" style="color: red;">
+        <h3 class="error-message" style="color: white;">
             <?php echo $error_message; ?>
-        </div>
+        </h3>
         <br>
-        <h2><a href="register.html"><button>Назад к регистрации</button></a></h2>
+        <a href="register.html"><button class="back-button">Назад к регистрации</button></a>
     <?php endif; ?>
 </body>
 </html>

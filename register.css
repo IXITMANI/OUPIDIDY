@@ -6,6 +6,7 @@ h1{
 
 .back-button{
     background-color: rgba(82, 143, 157, 0.337);
+    border: none;
 }
 
 .back-button:hover{
