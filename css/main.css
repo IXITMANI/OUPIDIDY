@@ -58,6 +58,7 @@ nav button:hover {
 article {
     background-color: #737392;
     color: #ecf0f1;
+    min-block-size: 250px;
     padding: 20px;
     border-radius: 25px;
     transition: transform 0.3s;
