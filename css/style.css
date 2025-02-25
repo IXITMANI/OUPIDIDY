@@ -1,34 +1,49 @@
 body {
+    margin: 0;
+    padding: 0;
     font-family: sans-serif;
     line-height: 1.6;
-    margin: 9%;
     background-color: #313242;
-    padding-right: 30%;
     color: #e7e7e7;
 }
 
-h1{
-    padding-left: 10%;
-    font-size: 2.5em;
+.text {
+    font-size: 1.5vh;
+    padding-right: 30%;
+    margin-top: 3%;
+    margin-left: 10%;
+    margin-bottom: 5%;
 }
+
+.heading_text{
+    font-family: monospace;
+    font-size: 6.5vh;
+    margin-top: 0;
+    padding-left: 10%;
+}
+
+.empty_space{
+    min-height: 18vh;
+}
+
 h2 {
     color: aliceblue;
 }
 
 .obj{
-    margin-top: 70px;
-    margin-bottom: 30px;
+    margin-top: 7vh;
+    margin-bottom: 3vh;
 
 }
 
 
 .back-button {
     display: inline-block;
-    padding: 10px 20px;
+    padding: 1vh 2vh;
     color: white;
     text-decoration: none;
-    border-radius: 5px;
-    margin-top: 20px;
+    border-radius: 0.5vh;
+    margin-top: 2vh;
 }
 
 .back-button:hover {
