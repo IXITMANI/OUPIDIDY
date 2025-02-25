@@ -11,10 +11,11 @@ body{
 }
 
 header {
-    display: grid;
-    padding: 2vh;
-    background-color: #282936;
+    min-height: 14vh;
+    padding-left: 10%;
+    background-color: #13141d86;
     color: white;
+    font-size: 6.5vh; 
 }
 
 .main-shit {
@@ -34,21 +35,6 @@ header {
 
 a {
     text-decoration: none;
-}
-
-
-nav button {
-    background-color: #66677e;
-    border: none;
-    padding: 10px 20px;
-    margin: 0 10px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    border-radius: 5px;
-}
-
-nav button:hover {
-    background-color: #D15955;
 }
 
 #professions {
@@ -78,12 +64,9 @@ article h3 {
     font-family: "Roboto Mono";
     color: #f2ecec;
     margin-top: 0;
+    margin-bottom: 1vh;
 }
 
-article a {
-    text-decoration: none;
-    color: inherit;
-}
 
 .SoftwareDeveloper:hover {
     transform: translateY(2px);
@@ -131,18 +114,6 @@ footer p {
     margin-top: -0.2vh;
     color:#8e8fa2
 }
-
-header nav button {
-    background-color: #737392;
-    color: white;
-    border-radius: 0;
-    cursor: pointer;
-}
-
-header nav button:hover{
-    background-color: #505168;
-} 
-
 
 .auth{
     display: flex;
