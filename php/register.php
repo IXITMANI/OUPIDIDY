@@ -85,9 +85,9 @@ $conn->close();
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Register</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/css/style.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/css/SoftwareDeveloper.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='/css/register.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/SoftwareDeveloper.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/register.css'>
 
 </head>
 <body>
@@ -97,7 +97,7 @@ $conn->close();
             <?php echo $error_message; ?>
         </h3>
         <br>
-        <a href="/html/register.html"><button class="back-button">Назад к регистрации</button></a>
+        <a href="../html/register.html"><button class="back-button">Назад к регистрации</button></a>
     <?php endif; ?>
 </body>
 </html>
