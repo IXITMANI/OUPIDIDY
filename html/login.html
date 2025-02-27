@@ -5,25 +5,40 @@
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Login</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/login.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/nav.css'>   
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
+    
 
     <style>
         
     </style>
 </head>
 <body>
-    <h1>Вход</h1>
+    <header class="heading" style="background-color: #36852999;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="/Main.html">домой</a></li>
+            </ul>
+        </nav>
+        <div class="heading_text">вход</div>
+    </header>
+
+
+    <div class="login_menu">
     <form action="../php/login.php" method="post">
-        <label for="username">Имя пользователя</label>
-        <input type="text" id="username" name="username" required><br>
-        <label for="password">Пароль</label>
-        <input type="password" id="password" name="password" required><br>
-        <br>
-        <input type="submit" value="Подтверить">
+        <div class="username_row">
+            <label for="username">Имя пользователя</label></br>
+            <input type="username" id="username" name="username" required>
+        </div>
+        <div class="password_row">
+            <label for="password">Пароль</label></br>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <input class="submit" type="submit" value="Подтверить">
     </form>
     <br>
     <a href='../html/register.html' class="register">Зарегистрироваться</a><br>
-    <a href="../Main.html" class="back-button">На главную</a>
+    </div>
 </body>
 </html>

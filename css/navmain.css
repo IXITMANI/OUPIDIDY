@@ -11,10 +11,8 @@
     font-family: 'Roboto Mono', monospace;
     font-weight: 500;
     font-size: 2vh;
-
     display: flex;
     justify-content: space-between;
-
     margin-right: 10%;
 }
 
