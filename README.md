@@ -29,6 +29,38 @@ Itmo Web-programming
         role VARCHAR(255) DEFAULT 'user'
     );
     ```
+    ```sql
+    CREATE TABLE professions (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+    );
+    ```
+    ```sql
+    CREATE TABLE qualities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL
+    );
+    ```
+    ```sql
+    CREATE TABLE profession_qualities (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    profession_id INT NOT NULL,
+    quality_id INT NOT NULL,
+    FOREIGN KEY (profession_id) REFERENCES professions(id) ON DELETE CASCADE,
+    FOREIGN KEY (quality_id) REFERENCES qualities(id) ON DELETE CASCADE
+    );
+    ```
+    ```sql
+    CREATE TABLE expert_ratings (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    expert_id INT(6) UNSIGNED NOT NULL,
+    profession_quality_id INT NOT NULL,
+    rating DECIMAL(3,2) NOT NULL,
+    UNIQUE KEY unique_rating (expert_id, profession_quality_id),
+    FOREIGN KEY (expert_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (profession_quality_id) REFERENCES profession_qualities(id) ON DELETE CASCADE
+    );
+    ```
 
 ### Шаг 3: Размещение файлов проекта
  Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
