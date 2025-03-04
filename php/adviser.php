@@ -147,7 +147,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ratings'])) {
         $stmt->execute();
         $stmt->close();
     }
-    echo "Рейтинги успешно сохранены!";
 }
 
 $conn->close();

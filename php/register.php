@@ -91,10 +91,10 @@ $conn->close();
 </head>
 <body>
 
-    <header class="heading" style="background-color: #36852999;">
+    <header class="heading" style="background-color: #13141d86;">
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="Main.html">домой</a></li>
+                <li><a href="../Main.html">домой</a></li>
             </ul>
         </nav>
         <div class="heading_text">Регистрация</div>
