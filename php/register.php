@@ -85,19 +85,26 @@ $conn->close();
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Register</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/nav.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
-    <link rel='stylesheet' type='text/css' media='screen' href='../css/SoftwareDeveloper.css'>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/register.css'>
-
 </head>
 <body>
-    <h1>Регистрация</h1>
+
+    <header class="heading" style="background-color: #36852999;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="Main.html">домой</a></li>
+            </ul>
+        </nav>
+        <div class="heading_text">Регистрация</div>
+    </header>
+
     <?php if (!empty($error_message)): ?>
-        <h3 class="error-message" style="color: white;">
+        <h3 class="error-message" style="color: white; margin-left: 10vh;">
             <?php echo $error_message; ?>
         </h3>
         <br>
-        <a href="../html/register.html"><button class="back-button">Назад к регистрации</button></a>
     <?php endif; ?>
 </body>
 </html>

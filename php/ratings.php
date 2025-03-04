@@ -36,21 +36,28 @@ $conn->close();
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Рейтинг качеств к профессиям</title>
+    <link rel="stylesheet" href="../css/rating.css">
+    <link rel="stylesheet" href="../css/navmain.css">
 </head>
 <body>
-    <header>
-        <h1>Рейтинг качеств к профессиям</h1>
-        <nav>
-            <a href="../Main.html"><button>Назад</button></a>
+    <header class="heading" style="background-color: #c66281;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="../Main.html">домой</a></li>
+                <li><a href="#">###</a></li>
+                <li><a href="#">###</a></li>
+            </ul>
         </nav>
+        <div class="empty_space"> </br> </div>
+        <div class="heading_text">Рейтинг оценки страниц</div>
     </header>
     <main>
         <table>
             <thead>
                 <tr>
-                    <th>Профессия</th>
-                    <th>Качество</th>
-                    <th>Средний рейтинг</th>
+                    <th>профессия</th>
+                    <th>качество</th>
+                    <th>средний рейтинг</th>
                 </tr>
             </thead>
             <tbody>
