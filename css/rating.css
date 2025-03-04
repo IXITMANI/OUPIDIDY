@@ -16,6 +16,11 @@ header {
   padding-left: 10%;
   color: white;
   font-size: 6.5vh; 
+  
+}
+
+.heading_text{
+  font-family: 'Rotobo Mono';
 }
 
 a {
