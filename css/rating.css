@@ -20,7 +20,7 @@ header {
 }
 
 .heading_text{
-  font-family: 'Rotobo Mono';
+  font-family: 'Rotobo Mono', monospace;
 }
 
 a {
