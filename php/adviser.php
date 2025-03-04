@@ -157,14 +157,19 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/nav.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/adviser.css'>
     <title>Adviser Page</title>
 </head>
 <body>
-    <header>
-        <h1>Привет, <?php echo htmlspecialchars($_SESSION['username']); ?>!</h1>
-        <nav>
-            <a href="logout.php">Logout</a>
+    <header class="heading" style="background-color: #7464af;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="../Main.html">домой</a></li>
+            </ul>
         </nav>
+        <div class="heading_text">Оценка</div>
     </header>
     <main>
         <?php if (isset($message)): ?>
@@ -194,7 +199,7 @@ $conn->close();
                     <?php endforeach; ?>
                 </tbody>
             </table>
-            <button type="submit">Сохранить рейтинги</button>
+            <button type="submit">Сохранить</button>
         </form>
 
         <h2>Назначить качество профессии</h2>
@@ -211,21 +216,24 @@ $conn->close();
                     <option value="<?php echo $quality['id']; ?>"><?php echo htmlspecialchars($quality['name']); ?></option>
                 <?php endforeach; ?>
             </select>
-            <button type="submit" name="assign_quality">Назначить качество</button>
+            </br>
+            <button type="submit" name="assign_quality">Назначить</button>
         </form>
 
         <h2>Добавить новую профессию</h2>
         <form method="post" action="adviser.php">
             <label for="profession_name">Название профессии:</label>
             <input type="text" id="profession_name" name="profession_name" required>
-            <button type="submit" name="add_profession">Добавить профессию</button>
+            </br>
+            <button type="submit" name="add_profession">Добавить</button>
         </form>
 
         <h2>Добавить новое качество</h2>
         <form method="post" action="adviser.php">
             <label for="quality_name">Название качества:</label>
             <input type="text" id="quality_name" name="quality_name" required>
-            <button type="submit" name="add_quality">Добавить качество</button>
+            </br>
+            <button type="submit" name="add_quality">Добавить</button>
         </form>
     </main>
 </body>
