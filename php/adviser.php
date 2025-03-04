@@ -68,30 +68,28 @@ if (isset($_POST['add_quality'])) {
 }
 
 // Обработка назначения качеств профессиям
-if (isset($_POST['assign_qualities'])) {
+if (isset($_POST['assign_quality'])) {
     $profession_id = $_POST['profession_id'];
-    $quality_ids = $_POST['quality_ids'];
+    $quality_id = $_POST['quality_id'];
 
-    foreach ($quality_ids as $quality_id) {
-        // Проверка, существует ли уже такое качество для данной профессии
-        $sql = "SELECT COUNT(*) FROM profession_qualities WHERE profession_id = ? AND quality_id = ?";
+    // Проверка, существует ли уже такое качество для данной профессии
+    $sql = "SELECT COUNT(*) FROM profession_qualities WHERE profession_id = ? AND quality_id = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("ii", $profession_id, $quality_id);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($count == 0) {
+        $sql = "INSERT INTO profession_qualities (profession_id, quality_id) VALUES (?, ?)";
         $stmt = $conn->prepare($sql);
         $stmt->bind_param("ii", $profession_id, $quality_id);
         $stmt->execute();
-        $stmt->bind_result($count);
-        $stmt->fetch();
         $stmt->close();
-
-        if ($count == 0) {
-            $sql = "INSERT INTO profession_qualities (profession_id, quality_id) VALUES (?, ?)";
-            $stmt = $conn->prepare($sql);
-            $stmt->bind_param("ii", $profession_id, $quality_id);
-            $stmt->execute();
-            $stmt->close();
-            $message = "Качества успешно назначены профессии.";
-        } else {
-            $message = "Некоторые качества уже назначены данной профессии.";
-        }
+        $message = "Качество успешно назначено профессии.";
+    } else {
+        $message = "Это качество уже назначено данной профессии.";
     }
 }
 
@@ -200,7 +198,7 @@ $conn->close();
             <button type="submit">Сохранить рейтинги</button>
         </form>
 
-        <h2>Назначить качества профессии</h2>
+        <h2>Назначить качество профессии</h2>
         <form method="post" action="adviser.php">
             <label for="profession_id">Профессия:</label>
             <select id="profession_id" name="profession_id" required>
@@ -208,14 +206,13 @@ $conn->close();
                     <option value="<?php echo $profession['id']; ?>"><?php echo htmlspecialchars($profession['name']); ?></option>
                 <?php endforeach; ?>
             </select>
-            <label for="quality_ids">Качества:</label>
-            <div id="quality_ids">
+            <label for="quality_id">Качество:</label>
+            <select id="quality_id" name="quality_id" required>
                 <?php foreach ($qualities as $quality): ?>
-                    <input type="checkbox" name="quality_ids[]" value="<?php echo $quality['id']; ?>">
-                    <label><?php echo htmlspecialchars($quality['name']); ?></label><br>
+                    <option value="<?php echo $quality['id']; ?>"><?php echo htmlspecialchars($quality['name']); ?></option>
                 <?php endforeach; ?>
-            </div>
-            <button type="submit" name="assign_qualities">Назначить качества</button>
+            </select>
+            <button type="submit" name="assign_quality">Назначить качество</button>
         </form>
 
         <h2>Добавить новую профессию</h2>
