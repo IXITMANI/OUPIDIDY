@@ -104,6 +104,13 @@ $profession_qualities = [];
 while ($row = $result->fetch_assoc()) {
     $profession_qualities[] = $row;
 }
+// Получение списка профессий
+$sql = "SELECT id, name FROM professions";
+$professions_result = $conn->query($sql);
+$professions = [];
+while ($row = $professions_result->fetch_assoc()) {
+    $professions[] = $row;
+}
 
 
 // Получение списка качеств
