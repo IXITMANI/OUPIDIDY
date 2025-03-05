@@ -137,16 +137,20 @@ while ($stmt->fetch()) {
 }
 $stmt->close();
 
-if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['ratings'])) {
-    foreach ($_POST['ratings'] as $profession_quality_id => $rating) {
-        $sql = "INSERT INTO expert_ratings (expert_id, profession_quality_id, rating)
-                VALUES (?, ?, ?)
-                ON DUPLICATE KEY UPDATE rating = ?";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("iidd", $expert_id, $profession_quality_id, $rating, $rating);
-        $stmt->execute();
-        $stmt->close();
-    }
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['rating'])) {
+    $profession_quality_id = $_POST['profession_quality_id'];
+    $rating = $_POST['rating'];
+
+    $sql = "INSERT INTO expert_ratings (expert_id, profession_quality_id, rating)
+            VALUES (?, ?, ?)
+            ON DUPLICATE KEY UPDATE rating = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("iidd", $expert_id, $profession_quality_id, $rating, $rating);
+    $stmt->execute();
+    $stmt->close();
+
+    header("Location: adviser.php");
+    exit();
 }
 
 $conn->close();
@@ -176,31 +180,32 @@ $conn->close();
             <p><?php echo $message; ?></p>
         <?php endif; ?>
         <h2>Оцените важность качеств для каждой профессии</h2>
-        <form method="post" action="adviser.php">
-            <table>
-                <thead>
-                    <tr>
-                        <th>Профессия</th>
-                        <th>Качество</th>
-                        <th>Рейтинг (0-10)</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php foreach ($profession_qualities as $pq): ?>
-                        <?php if (!in_array($pq['id'], $rated_profession_qualities)): ?>
-                            <tr>
-                                <td><?php echo htmlspecialchars($pq['profession_name']); ?></td>
-                                <td><?php echo htmlspecialchars($pq['quality_name']); ?></td>
-                                <td>
-                                    <input type="number" name="ratings[<?php echo $pq['id']; ?>]" min="0" max="10" step="0.1" required>
-                                </td>
-                            </tr>
-                        <?php endif; ?>
-                    <?php endforeach; ?>
-                </tbody>
-            </table>
-            <button type="submit">Сохранить</button>
-        </form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Профессия</th>
+                    <th>Качество</th>
+                    <th>Рейтинг (0-10)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php foreach ($profession_qualities as $pq): ?>
+                    <?php if (!in_array($pq['id'], $rated_profession_qualities)): ?>
+                        <tr>
+                            <td><?php echo htmlspecialchars($pq['profession_name']); ?></td>
+                            <td><?php echo htmlspecialchars($pq['quality_name']); ?></td>
+                            <td>
+                                <form method="post" action="adviser.php">
+                                    <input type="hidden" name="profession_quality_id" value="<?php echo $pq['id']; ?>">
+                                    <input type="number" name="rating" min="0" max="10" step="0.1" required>
+                                    <button type="submit">Сохранить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    <?php endif; ?>
+                <?php endforeach; ?>
+            </tbody>
+        </table>
 
         <h2>Назначить качество профессии</h2>
         <form method="post" action="adviser.php">
