@@ -4,7 +4,8 @@
 body{
     min-height: 100vh;
     margin: 0;
-    background-color: #313242;
+    background-image: linear-gradient(in 150deg, #404153 0%,
+    #22232e 100%);
     font-family: 'Open Sans', sans-serif;
     display: grid;
     grid-template-rows: auto 1fr auto;
@@ -34,6 +35,10 @@ header {
     color: white;
 }
 
+.heading:hover{
+    text-decoration:line-through;
+}
+
 a {
     text-decoration: none;
 }
@@ -57,13 +62,15 @@ article {
 article:hover {
     transform: translateY(2px);
     box-shadow: -7px 7px #D15955;
-    background-color: #505168;
-    color: #ecf0f1;
+    background-image: linear-gradient(240deg,
+    #505168 50%, #d1595558 100%);
+    font-weight: 400;
+    color: #ffffff; 
 }
 
 article h3 {
     font-family: "Roboto Mono";
-    color: #f2ecec;
+    color: #ffffff;
     margin-top: 0;
     margin-bottom: 1vh;
 }
@@ -71,26 +78,36 @@ article h3 {
 
 .SoftwareDeveloper:hover {
     transform: translateY(2px);
+    background-image: linear-gradient(240deg,
+    #505168 50%, #f7b32b37 100%);
     box-shadow: -6px 6px #F7B32B;
 }
 
 .DataScientist:hover {
     transform: translateY(2px);
+    background-image: linear-gradient(240deg,
+    #505168 50%, #85c6f249 100%);
     box-shadow: -6px 6px #85C7F2;
 }
 
 .WebDeveloper:hover {
     transform: translateY(2px);
+    background-image: linear-gradient(240deg,
+    #505168 50%, #dd894447 100%);
     box-shadow: -6px 6px #DD8944;
 }
 
 .CyberSecurity:hover {
     transform: translateY(2px);
+    background-image: linear-gradient(240deg,
+    #505168 50%, #45ca6d4a 100%);
     box-shadow: -6px 6px #45CA6D;
 }
 
 .UIDesigner:hover {
     transform: translateY(2px);
+    background-image: linear-gradient(240deg,
+    #505168 50%, #ad58916c 100%);
     box-shadow: -6px 6px #AD5891; 
 }
 
