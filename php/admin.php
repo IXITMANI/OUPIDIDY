@@ -19,7 +19,33 @@ if ($conn->connect_error) {
 }
 
 $error_message = "";
+// Обработка добавления новой профессии
+if (isset($_POST['add_profession'])) {
+    $profession_name = $_POST['profession_name'];
+    $profession_description = $_POST['profession_description'];
 
+    // Проверка, существует ли уже такая профессия
+    $sql = "SELECT COUNT(*) FROM professions WHERE name = ?";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("s", $profession_name);
+    $stmt->execute();
+    $stmt->bind_result($count);
+    $stmt->fetch();
+    $stmt->close();
+
+    if ($count == 0) {
+        // Вставка новой профессии
+        $sql = "INSERT INTO professions (name, description, color_id) VALUES (?, ?, ?)";
+        $stmt = $conn->prepare($sql);
+        $color_id = rand(1, 5); // Предполагаем, что у вас есть 5 цветов в таблице colors
+        $stmt->bind_param("ssi", $profession_name, $profession_description, $color_id);
+        $stmt->execute();
+        $stmt->close();
+        $message = "Профессия успешно добавлена.";
+    } else {
+        $message = "Эта профессия уже существует.";
+    }
+}
 // Удаление пользователя
 if (isset($_GET['delete'])) {
     $id = $_GET['delete'];
@@ -81,99 +107,7 @@ while ($row = $professions_result->fetch_assoc()) {
     <meta http-equiv='X-UA-Compatible' content='IE=edge'>
     <title>Admin Page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            background-color: #f4f4f4;
-            margin: 0;
-            padding: 0;
-        }
-        .container {
-            width: 80%;
-            margin: auto;
-            overflow: hidden;
-        }
-        header {
-            background: #333;
-            color: #fff;
-            padding-top: 30px;
-            min-height: 70px;
-            border-bottom: #77aaff 3px solid;
-        }
-        header a {
-            color: #fff;
-            text-decoration: none;
-            text-transform: uppercase;
-            font-size: 16px;
-        }
-        header ul {
-            padding: 0;
-            list-style: none;
-        }
-        header li {
-            float: left;
-            display: inline;
-            padding: 0 20px 0 20px;
-        }
-        header #branding {
-            float: left;
-        }
-        header #branding h1 {
-            margin: 0;
-        }
-        header nav {
-            float: right;
-            margin-top: 10px;
-        }
-        .error-message {
-            color: red;
-            margin: 20px 0;
-        }
-        table {
-            width: 100%;
-            margin: 20px 0;
-            border-collapse: collapse;
-        }
-        table, th, td {
-            border: 1px solid #ddd;
-        }
-        th, td {
-            padding: 10px;
-            text-align: left;
-        }
-        th {
-            background-color: #f2f2f2;
-        }
-        tr:nth-child(even) {
-            background-color: #f9f9f9;
-        }
-        tr:hover {
-            background-color: #f1f1f1;
-        }
-        .btn {
-            display: inline-block;
-            color: #fff;
-            background-color: #333;
-            padding: 10px 20px;
-            text-align: center;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .btn:hover {
-            background-color: #555;
-        }
-        .update-btn {
-            background-color: #6c757d;
-            color: white;
-            border: none;
-            padding: 5px 10px;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .update-btn:hover {
-            background-color: #5a6268;
-        }
-    </style>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/admin.css'>
 </head>
 <body>
     <header>
@@ -237,13 +171,7 @@ while ($row = $professions_result->fetch_assoc()) {
         </table>
     </div>
     <div>
-        <h2>Добавить новую профессию</h2>
-            <form method="post" action="adviser.php">
-                <label for="profession_name">Название профессии:</label>
-                <input type="text" id="profession_name" name="profession_name" required>
-                </br>
-                <button type="submit" name="add_profession">Добавить</button>
-            </form>
+        <a href="prof_add.php"><button>Добавить профессию</button></a>
     </div>
 </body>
 </html>
