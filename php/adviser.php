@@ -105,14 +105,6 @@ while ($row = $result->fetch_assoc()) {
     $profession_qualities[] = $row;
 }
 
-// Получение списка профессий
-$sql = "SELECT id, name FROM professions";
-$professions_result = $conn->query($sql);
-
-$professions = [];
-while ($row = $professions_result->fetch_assoc()) {
-    $professions[] = $row;
-}
 
 // Получение списка качеств
 $sql = "SELECT id, name FROM qualities";
@@ -223,14 +215,6 @@ $conn->close();
             </select>
             </br>
             <button type="submit" name="assign_quality">Назначить</button>
-        </form>
-
-        <h2>Добавить новую профессию</h2>
-        <form method="post" action="adviser.php">
-            <label for="profession_name">Название профессии:</label>
-            <input type="text" id="profession_name" name="profession_name" required>
-            </br>
-            <button type="submit" name="add_profession">Добавить</button>
         </form>
 
         <h2>Добавить новое качество</h2>

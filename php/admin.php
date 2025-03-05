@@ -63,7 +63,16 @@ if (isset($_POST['update_role'])) {
 // Получение списка пользователей
 $sql = "SELECT id, username, email, phone, age, reg_date, role FROM users";
 $result = $conn->query($sql);
+
+// Получение списка профессий
+$sql = "SELECT id, name FROM professions";
+$professions_result = $conn->query($sql);
+$professions = [];
+while ($row = $professions_result->fetch_assoc()) {
+    $professions[] = $row;
+}
 ?>
+
 
 <!DOCTYPE html>
 <html>
@@ -226,6 +235,15 @@ $result = $conn->query($sql);
                 <?php endif; ?>
             <?php endwhile; ?>
         </table>
+    </div>
+    <div>
+        <h2>Добавить новую профессию</h2>
+            <form method="post" action="adviser.php">
+                <label for="profession_name">Название профессии:</label>
+                <input type="text" id="profession_name" name="profession_name" required>
+                </br>
+                <button type="submit" name="add_profession">Добавить</button>
+            </form>
     </div>
 </body>
 </html>
