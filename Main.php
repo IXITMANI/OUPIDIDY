@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset='utf-8'>
+    <meta http-equiv='X-UA-Compatible' content='IE=edge'>
+    <title>IT Профессии</title>
+    <meta name='viewport' content='width=device-width, initial-scale=1'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/main.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='css/navmain.css'>
+</head>
+<body>
+    <header>
+        <nav class="links_header">
+            <div class="empty_space"> </br> </div>
+            <ul class="nav_links">
+                <li><nav class="links">
+                    <a href="php/ratings.php"><button>рейтинги</button></a>
+                    <a href="#">###</a>
+                    <a href="#">###</a></nav>
+                </li>
+                <li><nav class="auth">
+                    <a href='html/login.html'><button>вход</button></a>
+                    <a href='html/register.html'><button>регистрация</button></a>
+                    </nav>
+                </li>
+            </ul>
+        </nav>
+    </header>
+
+    <div class="main-shit">
+    <h2 class="heading">IT-профессии</h2>
+
+    <section id="professions">
+        <a href="php/profession.php">
+            <article class="SoftwareDeveloper">
+                <h3>Разработчик pidor</h3>
+                <p>Разработчики программного обеспечения создают приложения и системы, работающие на компьютерах и других устройствах. Они пишут, тестируют и отлаживают код.</p>
+            </article>
+        </a>
+
+        <a href="html/SoftwareDeveloper.html">
+            <article class="SoftwareDeveloper">
+                <h3>Разработчик ПО</h3>
+                <p>Разработчики программного обеспечения создают приложения и системы, работающие на компьютерах и других устройствах. Они пишут, тестируют и отлаживают код.</p>
+            </article>
+        </a>
+
+
+        <a href="html/WebDeveloper.html">
+            <article class="WebDeveloper">
+                <h3>Web-разработчик</h3>
+                <p>Веб-разработчики создают и поддерживают веб-сайты и веб-приложения.</p>
+            </article>
+        </a>
+
+
+        <a href="html/Cybersecurity.html">
+            <article class="CyberSecurity">
+                <h3>Специалист по кибербезопасности</h3>
+                <p>Специалисты по кибербезопасности защищают компьютерные системы и сети от киберугроз.</p>
+            </article>
+        </a>
+
+        <a href="html/DataScientist.html">
+            <article class="DataScientist">
+                <h3>Data Scientist (Специалист по данным)</h3>
+                <p>Специалисты по данным анализируют и интерпретируют сложные данные, чтобы помочь организациям принимать лучшие решения. Они используют статистические методы и машинное обучение.</p>
+            </article>
+        </a>
+
+
+        <a href="html/BlackDevOps.html">
+            <article class="DevOps">
+                <h3>DevOps-специалист</h3>
+                <p>DevOps-специалисты объединяют практику разработки программного обеспечения (Dev) и эксплуатации (Ops) для автоматизации процессов и повышения эффективности работы.</p>
+            </article>
+        </a>
+
+        <a href="html/UIDesigner.html">
+            <article class="UIDesigner">
+                <h3>UX/UI дизайнер</h3>
+                <p>UX/UI дизайнер — это специалист, который отвечает за создание удобного и привлекательного пользовательского интерфейса и опыта. </p>
+            </article>
+        </a>
+    </section>
+  </div>  
+</body>
+    <a href="https://псж.онлайн"><footer> <p>&copy; 2025  Путеводитель по IT-профессиям</p> </footer></a>
+</html>
