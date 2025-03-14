@@ -43,7 +43,7 @@ $conn->close();
     <header class="heading" style="background-color: #c66281;">
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="../Main.html">домой</a></li>
+                <li><a href="../Main.php">домой</a></li>
                 <li><a href="#">###</a></li>
                 <li><a href="#">###</a></li>
             </ul>

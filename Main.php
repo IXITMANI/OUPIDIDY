@@ -31,57 +31,43 @@
     <h2 class="heading">IT-профессии</h2>
 
     <section id="professions">
-        <a href="php/profession.php">
-            <article class="SoftwareDeveloper">
-                <h3>Разработчик pidor</h3>
-                <p>Разработчики программного обеспечения создают приложения и системы, работающие на компьютерах и других устройствах. Они пишут, тестируют и отлаживают код.</p>
-            </article>
-        </a>
+        <?php
+        // Подключение к базе данных
+        $servername = "localhost";
+        $username = "root";
+        $password = "";
+        $dbname = "MyUsers";
 
-        <a href="html/SoftwareDeveloper.html">
-            <article class="SoftwareDeveloper">
-                <h3>Разработчик ПО</h3>
-                <p>Разработчики программного обеспечения создают приложения и системы, работающие на компьютерах и других устройствах. Они пишут, тестируют и отлаживают код.</p>
-            </article>
-        </a>
+        // Создание соединения
+        $conn = new mysqli($servername, $username, $password, $dbname);
 
+        // Проверка соединения
+        if ($conn->connect_error) {
+            die("Connection failed: " . $conn->connect_error);
+        }
 
-        <a href="html/WebDeveloper.html">
-            <article class="WebDeveloper">
-                <h3>Web-разработчик</h3>
-                <p>Веб-разработчики создают и поддерживают веб-сайты и веб-приложения.</p>
-            </article>
-        </a>
+        // SQL-запрос для получения профессий и их цветов
+        $sql = "SELECT p.id, p.name, p.description, c.hex AS color 
+                FROM professions p 
+                JOIN colors c ON p.color_id = c.id";
+        $result = $conn->query($sql);
 
+        if ($result->num_rows > 0) {
+            // Вывод данных каждой строки
+            while($row = $result->fetch_assoc()) {
+                echo "<a href='php/profession.php?id=" . $row["id"] . "'>";
+                echo "<article class='profession';'>";
+                echo "<h3>" . $row["name"] . "</h3>";
+                echo "<p>". $row["description"]."</p>"; // Здесь можно добавить описание из другой таблицы, если оно есть
+                echo "</article>";
+                echo "</a>";
+            }
+        } else {
+            echo "0 results";
+        }
 
-        <a href="html/Cybersecurity.html">
-            <article class="CyberSecurity">
-                <h3>Специалист по кибербезопасности</h3>
-                <p>Специалисты по кибербезопасности защищают компьютерные системы и сети от киберугроз.</p>
-            </article>
-        </a>
-
-        <a href="html/DataScientist.html">
-            <article class="DataScientist">
-                <h3>Data Scientist (Специалист по данным)</h3>
-                <p>Специалисты по данным анализируют и интерпретируют сложные данные, чтобы помочь организациям принимать лучшие решения. Они используют статистические методы и машинное обучение.</p>
-            </article>
-        </a>
-
-
-        <a href="html/BlackDevOps.html">
-            <article class="DevOps">
-                <h3>DevOps-специалист</h3>
-                <p>DevOps-специалисты объединяют практику разработки программного обеспечения (Dev) и эксплуатации (Ops) для автоматизации процессов и повышения эффективности работы.</p>
-            </article>
-        </a>
-
-        <a href="html/UIDesigner.html">
-            <article class="UIDesigner">
-                <h3>UX/UI дизайнер</h3>
-                <p>UX/UI дизайнер — это специалист, который отвечает за создание удобного и привлекательного пользовательского интерфейса и опыта. </p>
-            </article>
-        </a>
+        $conn->close();
+        ?>
     </section>
   </div>  
 </body>

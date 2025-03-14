@@ -32,13 +32,23 @@ Itmo Web-programming
     ```sql
     CREATE TABLE professions (
     id INT AUTO_INCREMENT PRIMARY KEY,
-    name VARCHAR(255) NOT NULL
+    name VARCHAR(255) NOT NULL,
+    description TEXT,
+    color_id INT,
+    FOREIGN KEY (color_id) REFERENCES colors(id) ON DELETE SET NULL
     );
     ```
     ```sql
     CREATE TABLE qualities (
     id INT AUTO_INCREMENT PRIMARY KEY,
     name VARCHAR(255) NOT NULL
+    );
+    ```
+    ```sql
+    CREATE TABLE colors (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    color VARCHAR(50) NOT NULL,
+    hex VARCHAR(7) NOT NULL
     );
     ```
     ```sql
@@ -69,7 +79,7 @@ Itmo Web-programming
 
 ## Использование
 
-1. Откройте браузер и перейдите по адресу `http://localhost/OUPIDIDY/Main.html`.
+1. Откройте браузер и перейдите по адресу `http://localhost/OUPIDIDY/Main.php`.
 2. На главной странице нажмите ссылку "Регистрация", чтобы перейти на страницу регистрации.
 3. Заполните форму регистрации и нажмите кнопку "Зарегистрироваться".
 4. Если регистрация прошла успешно, вы будете перенаправлены на страницу пользователя.
@@ -78,18 +88,35 @@ Itmo Web-programming
 
 ```plaintext
 C:/xampp/htdocs/OUPIDIDY/
-├── Main.html                 # Главная страница
-├── register.html             # Страница регистрации
-├── register.php              # Обработчик регистрации на PHP
-├── login.html                # Страница входа
-├── login.php                 # Обработчик входа на PHP
-├── user.php                  # Страница пользователя
-├── admin.php                 # Страница администратора
-├── logout.php                # Обработчик выхода
-├── SoftwareDeveloper.html    # Страница профессии "Software Developer"
-├── DataScientist.html        # Страница профессии "Data Scientist"
-├── WebDeveloper.html         # Страница профессии "Web Developer"
-├── Cybersecurity.html        # Страница профессии "Cybersecurity Specialist"
-├── BlackDevOps.html          # Страница профессии "DevOps Specialist"
-└── styles.css                # Стили (опционально)
+├── Main.php                 # Главная страница
+├── README.md                # Файл с описанием проекта
+├── css/                     # Папка со стилями
+│   ├── admin.css
+│   ├── adviser.css
+│   ├── login.css
+│   ├── main.css
+│   ├── nav.css
+│   ├── navmain.css
+│   ├── rating.css
+│   ├── register.css
+│   └── style.css
+├── html/                    # Папка с HTML-страницами
+│   ├── BlackDevOps.html
+│   ├── Cybersecurity.html
+│   ├── DataScientist.html
+│   ├── login.html
+│   ├── register.html
+│   ├── SoftwareDeveloper.html
+│   ├── UIDesigner.html
+│   └── WebDeveloper.html
+├── php/                     # Папка с PHP-скриптами
+│   ├── admin.php
+│   ├── adviser.php
+│   ├── login.php
+│   ├── logout.php
+│   ├── prof_add.php
+│   ├── profession.php
+│   ├── ratings.php
+│   ├── register.php
+│   └── user.php
 ```

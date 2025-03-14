@@ -169,7 +169,7 @@ $conn->close();
     <header class="heading" style="background-color: #7464af;">
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="../Main.html">домой</a></li>
+                <li><a href="../Main.php">домой</a></li>
             </ul>
         </nav>
         <div class="heading_text">Оценка</div>
