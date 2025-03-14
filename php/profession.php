@@ -52,7 +52,7 @@ $conn->close();
     <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
 </head>
 <body>
-    <header class="heading" style="background-color: #D1595599;">
+    <header class="heading" style="background-color: <?php echo htmlspecialchars($profession_color); ?>;">
         <nav class="links_header">
             <ul class="nav_links">
                 <li><a href="../Main.php">домой</a></li>
@@ -60,16 +60,15 @@ $conn->close();
                 <li><a href="#">пустышка</a></li>
             </ul>
         </nav>
-        <div class="empty_space"> </br> </div>
-        <div class="heading_text">DevOps-специалист</div>
+        <div class="empty_space"s> </br> </div>
+        <div class="heading_text"><?php echo htmlspecialchars($profession_name); ?></div>
     </header>
 
     <div class="main-shit">
         <h2 class="heading"><?php echo htmlspecialchars($profession_name); ?></h2>
-        <section id="profession-details" style="background-color: <?php echo htmlspecialchars($profession_color); ?>;">
+        <section id="profession-details">
             <p><?php echo htmlspecialchars($profession_description); ?></p>
         </section>
     </div>  
 </body>
-    <a href="https://псж.онлайн"><footer> <p>&copy; 2025  Путеводитель по IT-профессиям</p> </footer></a>
 </html>
