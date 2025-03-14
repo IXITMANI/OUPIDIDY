@@ -102,8 +102,9 @@ $result = $conn->query($sql);
 
 $profession_qualities = [];
 while ($row = $result->fetch_assoc()) {
-    $profession_qualities[] = $row;
+    $profession_qualities[$row['profession_name']][] = $row;
 }
+
 // Получение списка профессий
 $sql = "SELECT id, name FROM professions";
 $professions_result = $conn->query($sql);
@@ -111,7 +112,6 @@ $professions = [];
 while ($row = $professions_result->fetch_assoc()) {
     $professions[] = $row;
 }
-
 
 // Получение списка качеств
 $sql = "SELECT id, name FROM qualities";
@@ -124,15 +124,20 @@ while ($row = $qualities_result->fetch_assoc()) {
 
 // Получение списка оценок, которые пользователь уже сделал
 $expert_id = $_SESSION['user_id'];
-$sql = "SELECT profession_quality_id FROM expert_ratings WHERE expert_id = ?";
+$sql = "SELECT pq.id, p.name AS profession_name, q.name AS quality_name, er.rating
+        FROM expert_ratings er
+        JOIN profession_qualities pq ON er.profession_quality_id = pq.id
+        JOIN professions p ON pq.profession_id = p.id
+        JOIN qualities q ON pq.quality_id = q.id
+        WHERE er.expert_id = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $expert_id);
 $stmt->execute();
-$stmt->bind_result($rated_profession_quality_id);
+$result = $stmt->get_result();
 
 $rated_profession_qualities = [];
-while ($stmt->fetch()) {
-    $rated_profession_qualities[] = $rated_profession_quality_id;
+while ($row = $result->fetch_assoc()) {
+    $rated_profession_qualities[$row['profession_name']][$row['quality_name']] = $row['rating'];
 }
 $stmt->close();
 
@@ -178,59 +183,53 @@ $conn->close();
         <?php if (isset($message)): ?>
             <p><?php echo $message; ?></p>
         <?php endif; ?>
-        <h2>Оцените важность качеств для каждой профессии</h2>
-        <table>
-            <thead>
-                <tr>
-                    <th>Профессия</th>
-                    <th>Качество</th>
-                    <th>Рейтинг (0-10)</th>
-                </tr>
-            </thead>
-            <tbody>
-                <?php foreach ($profession_qualities as $pq): ?>
-                    <?php if (!in_array($pq['id'], $rated_profession_qualities)): ?>
-                        <tr>
-                            <td><?php echo htmlspecialchars($pq['profession_name']); ?></td>
-                            <td><?php echo htmlspecialchars($pq['quality_name']); ?></td>
-                            <td>
-                                <form method="post" action="adviser.php">
-                                    <input type="hidden" name="profession_quality_id" value="<?php echo $pq['id']; ?>">
-                                    <input type="number" name="rating" min="0" max="10" step="0.1" required>
-                                    <button type="submit">Сохранить</button>
-                                </form>
-                            </td>
-                        </tr>
-                    <?php endif; ?>
-                <?php endforeach; ?>
-            </tbody>
-        </table>
-
-        <h2>Назначить качество профессии</h2>
-        <form method="post" action="adviser.php">
-            <label for="profession_id">Профессия:</label>
-            <select id="profession_id" name="profession_id" required>
+        <h2>Выберите профессию для оценки</h2>
+        <form method="get" action="adviser.php">
+            <label for="selected_profession">Профессия:</label>
+            <select id="selected_profession" name="selected_profession" required>
                 <?php foreach ($professions as $profession): ?>
-                    <option value="<?php echo $profession['id']; ?>"><?php echo htmlspecialchars($profession['name']); ?></option>
+                    <option value="<?php echo $profession['name']; ?>" <?php echo isset($_GET['selected_profession']) && $_GET['selected_profession'] == $profession['name'] ? 'selected' : ''; ?>><?php echo htmlspecialchars($profession['name']); ?></option>
                 <?php endforeach; ?>
             </select>
-            <label for="quality_id">Качество:</label>
-            <select id="quality_id" name="quality_id" required>
-                <?php foreach ($qualities as $quality): ?>
-                    <option value="<?php echo $quality['id']; ?>"><?php echo htmlspecialchars($quality['name']); ?></option>
-                <?php endforeach; ?>
-            </select>
-            </br>
-            <button type="submit" name="assign_quality">Назначить</button>
+            <button type="submit">Выбрать</button>
         </form>
 
-        <h2>Добавить новое качество</h2>
-        <form method="post" action="adviser.php">
-            <label for="quality_name">Название качества:</label>
-            <input type="text" id="quality_name" name="quality_name" required>
-            </br>
-            <button type="submit" name="add_quality">Добавить</button>
-        </form>
+        <?php if (isset($_GET['selected_profession'])): ?>
+            <h2>Оцените важность качеств для профессии: <?php echo htmlspecialchars($_GET['selected_profession']); ?></h2>
+            <div class="profession-tables">
+                <?php $selected_profession = $_GET['selected_profession']; ?>
+                <?php if (isset($profession_qualities[$selected_profession])): ?>
+                    <div class="profession-table">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Качество</th>
+                                    <th>Рейтинг (0-10)</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($profession_qualities[$selected_profession] as $quality): ?>
+                                    <tr>
+                                        <td><?php echo htmlspecialchars($quality['quality_name']); ?></td>
+                                        <td>
+                                            <form method="post" action="adviser.php">
+                                                <input type="hidden" name="profession_quality_id" value="<?php echo $quality['id']; ?>">
+                                                <input type="number" name="rating" min="0" max="10" step="0.1" value="<?php echo isset($rated_profession_qualities[$selected_profession][$quality['quality_name']]) ? htmlspecialchars($rated_profession_qualities[$selected_profession][$quality['quality_name']]) : ''; ?>" required>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                                
+                            </tbody>
+        
+                        </table>
+                        <button type="submit">Сохранить</button>
+                        </form>
+                    </div>
+                <?php else: ?>
+                    <p>Для выбранной профессии нет назначенных качеств.</p>
+                <?php endif; ?>
+            </div>
+        <?php endif; ?>
     </main>
 </body>
 </html>
