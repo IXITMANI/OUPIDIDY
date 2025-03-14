@@ -38,6 +38,30 @@ if ($result->num_rows > 0) {
 }
 
 $stmt->close();
+
+// SQL-запрос для получения топ 5 качеств профессии с их рейтингами
+$sql = "SELECT q.name, AVG(er.rating) AS average_rating 
+        FROM profession_qualities pq 
+        JOIN qualities q ON pq.quality_id = q.id 
+        LEFT JOIN expert_ratings er ON pq.id = er.profession_quality_id 
+        WHERE pq.profession_id = ? 
+        GROUP BY q.name 
+        ORDER BY average_rating DESC 
+        LIMIT 5";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("i", $profession_id);
+$stmt->execute();
+$result = $stmt->get_result();
+
+$qualities = [];
+while ($row = $result->fetch_assoc()) {
+    $qualities[] = [
+        'name' => $row['name'],
+        'average_rating' => $row['average_rating']
+    ];
+}
+
+$stmt->close();
 $conn->close();
 ?>
 
@@ -60,7 +84,7 @@ $conn->close();
                 <li><a href="#">пустышка</a></li>
             </ul>
         </nav>
-        <div class="empty_space"s> </br> </div>
+        <div class="empty_space"> </br> </div>
         <div class="heading_text"><?php echo htmlspecialchars($profession_name); ?></div>
     </header>
 
@@ -68,6 +92,19 @@ $conn->close();
         <h2 class="heading"><?php echo htmlspecialchars($profession_name); ?></h2>
         <section id="profession-details">
             <p><?php echo htmlspecialchars($profession_description); ?></p>
+        </section>
+
+        <section id="top-qualities">
+            <h3>Топ 5 качеств</h3>
+            <?php if (!empty($qualities)): ?>
+                <ul>
+                    <?php foreach ($qualities as $quality): ?>
+                        <li><?php echo htmlspecialchars($quality['name']); ?> - Рейтинг: <?php echo number_format($quality['average_rating'], 2); ?></li>
+                    <?php endforeach; ?>
+                </ul>
+            <?php else: ?>
+                <p>Качества для этой профессии отсутствуют.</p>
+            <?php endif; ?>
         </section>
     </div>  
 </body>
