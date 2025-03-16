@@ -14,7 +14,7 @@
             <div class="empty_space"> </br> </div>
             <ul class="nav_links">
                 <li><nav class="links">
-                    <a href="#">###</a>
+                    <a href="./php/reaction_test.php">Тест</a>
                     <a href="#">###</a>
                     <a href="#">###</a></nav>
                 </li>
