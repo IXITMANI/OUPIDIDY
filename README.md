@@ -83,8 +83,8 @@ Itmo Web-programming
 
 ```plaintext
 C:/xampp/htdocs/OUPIDIDY/
-├── Main.php                 # Главная страница
-├── README.md                # Файл с описанием проекта
+├── [Main.php](http://_vscodecontentref_/1)                 # Главная страница
+├── [README.md](http://_vscodecontentref_/2)                # Файл с описанием проекта
 ├── css/                     # Папка со стилями
 │   ├── admin.css
 │   ├── adviser.css
@@ -94,7 +94,8 @@ C:/xampp/htdocs/OUPIDIDY/
 │   ├── navmain.css
 │   ├── rating.css
 │   ├── register.css
-│   └── style.css
+│   ├── style.css
+│   └── reaction_test.css    # Стили для теста на реакцию
 ├── html/                    # Папка с HTML-страницами
 │   ├── BlackDevOps.html
 │   ├── Cybersecurity.html
@@ -103,7 +104,8 @@ C:/xampp/htdocs/OUPIDIDY/
 │   ├── register.html
 │   ├── SoftwareDeveloper.html
 │   ├── UIDesigner.html
-│   └── WebDeveloper.html
+│   ├── WebDeveloper.html
+│   └── reaction_test.html   # Страница теста на реакцию
 ├── php/                     # Папка с PHP-скриптами
 │   ├── admin.php
 │   ├── adviser.php
@@ -113,5 +115,6 @@ C:/xampp/htdocs/OUPIDIDY/
 │   ├── profession.php
 │   ├── ratings.php
 │   ├── register.php
-│   └── user.php
+│   ├── user.php
+│   └── reaction_test.php    # Скрипт для теста на реакцию
 ```
