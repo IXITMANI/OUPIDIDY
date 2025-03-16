@@ -56,7 +56,7 @@
             // Вывод данных каждой строки
             while($row = $result->fetch_assoc()) {
                 echo "<a href='php/profession.php?id=" . $row["id"] . "'>";
-                echo "<article class='profession';'>";
+                echo "<article class='profession' style='box-shadow: -7px 7px #D15955;';'>"; //TODO: replace color on color(hex) from db
                 echo "<h3>" . $row["name"] . "</h3>";
                 echo "<p>". $row["description"]."</p>"; // Здесь можно добавить описание из другой таблицы, если оно есть
                 echo "</article>";
