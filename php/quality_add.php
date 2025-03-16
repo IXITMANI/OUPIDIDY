@@ -88,6 +88,7 @@ $conn->close();
     <title>Назначить качество профессии</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/admin.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
 </head>
 <body>
     <header>
@@ -111,6 +112,7 @@ $conn->close();
                     <option value="<?php echo $profession['id']; ?>" <?php echo $selected_profession_id == $profession['id'] ? 'selected' : ''; ?>><?php echo htmlspecialchars($profession['name']); ?></option>
                 <?php endforeach; ?>
             </select>
+                </br>
             <button type="submit">Выбрать</button>
         </form>
 

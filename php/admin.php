@@ -108,6 +108,8 @@ while ($row = $professions_result->fetch_assoc()) {
     <title>Admin Page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/admin.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
+
 </head>
 <body>
     <header>
@@ -131,7 +133,7 @@ while ($row = $professions_result->fetch_assoc()) {
             </div>
         <?php endif; ?>
         <table>
-            <tr>
+            <tr class="table_text">
                 <th>ID</th>
                 <th>Username</th>
                 <th>Email</th>
@@ -170,7 +172,7 @@ while ($row = $professions_result->fetch_assoc()) {
             <?php endwhile; ?>
         </table>
     </div>
-    <div>
+    <div class="button_group">
         <a href="prof_add.php"><button>Добавить профессию</button></a>
         <a href="quality_add.php"><button>Добавить качество</button></a>
     </div>

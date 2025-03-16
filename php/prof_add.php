@@ -14,22 +14,15 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
     <title>Admin Page</title>
     <meta name='viewport' content='width=device-width, initial-scale=1'>
     <link rel='stylesheet' type='text/css' media='screen' href='../css/admin.css'>
+    <link rel='stylesheet' type='text/css' media='screen' href='../css/style.css'>
 </head>
     <body>
     <header>
-        <div class="container">
-            <div id="branding">
-                <h1>Admin Page</h1>
-            </div>
-            <nav>
-                <ul>
-                    <li><a href="logout.php" class="btn">Logout</a></li>
-                </ul>
-            </nav>
-        </div>
+        <h1 style="padding-left: 10%">Admin Page</h1>
     </header>
     <div>
-        <h2>Добавить новую профессию</h2>
+        <div class="container">
+            <h2>Добавить новую профессию</h2>
             <form method="post" action="admin.php">
                 <label for="profession_name">Название профессии:</label></br>
                 <input type="text" id="profession_name" name="profession_name" required></br>
@@ -38,7 +31,7 @@ if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
                 </br>
                 <button type="submit" name="add_profession">Добавить</button>
             </form>
-    </div>
+        </div>
     <div>
         <a href="admin.php"><button>Назад</button></a>
     </div>
