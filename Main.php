@@ -14,9 +14,9 @@
             <div class="empty_space"> </br> </div>
             <ul class="nav_links">
                 <li><nav class="links">
-                    <a href="./php/reaction_test.php">Тест</a>
-                    <a href="#">###</a>
-                    <a href="#">###</a></nav>
+                    <a href="./php/reaction_test.php">Тест реакция</a>
+                    <a href="./php/sound_test.php">Тест звук</a>
+                    <a href="php/color_test.php">Тест цвета</a></nav>
                 </li>
                 <li><nav class="auth">
                     <a href='html/login.html'><button>вход</button></a>
