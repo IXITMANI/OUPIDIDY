@@ -4,10 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тест на реакцию</title>
+    <link rel="stylesheet" type="text/css" href="../css/nav.css">
     <link rel="stylesheet" type="text/css" href="../css/reaction_test.css">
 </head>
 <body>
-    <a id="backButton" href="../Main.php">Назад</a>
+    <header class="heading" style="background-color: #13141d86;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="../Main.php">домой</a></li>
+            </ul>
+        </nav>
+        <div class="heading_text">тест на реакцию</div>
+    </header>
     <div id="description">
         <p>На экране будет появляться красный круг с рандомной периодичностью 5 раз.</p>
         <p>Ваша задача - нажимать пробел в ответ на появление круга.</p>

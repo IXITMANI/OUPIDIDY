@@ -1,54 +1,80 @@
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans:ital,wght@0,300..800;1,300..800&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+
 body {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    background-color: #f0f0f0;
-    flex-direction: column;
-    text-align: center;
-    position: relative;
+    font-size: 1.8vh;
+    max-width: 100%;
+    background-image: linear-gradient(60deg, #313242 50%, #202236 100%);
+    font-family: 'Open Sans', sans-serif;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    color: #ecf0f1;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
 }
+
+#backButton {
+    display: inline-block;
+    padding: 1vh 2vh;
+    color: white;
+    text-decoration: none;
+    border-radius: 0.5vh;
+    margin: 2vh;
+    font-family: "Roboto Mono", monospace;
+    transition: 400ms;
+}
+
+#backButton:hover {
+    background-color: #D15955;
+}
+
+#description, #results {
+    font-family: "Open Sans", sans-serif;
+    max-width: 80%;
+    margin: 5vh auto;
+    padding: 3vh;
+    border-radius: 25px;
+    transition: transform 0.3s;
+}
+
 
 #circle {
     width: 100px;
     height: 100px;
-    background-color: red;
+    background-color: #D15955;
     border-radius: 50%;
+    margin: 5vh auto;
     display: none;
-    position: absolute;
 }
 
 #startButton {
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-}
-
-#results {
-    margin-top: 20px;
-    font-size: 18px;
-    text-align: center;
-}
-
-#description {
-    margin-bottom: 20px;
-    font-size: 18px;
-}
-
-#backButton {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    font-size: 16px;
-    cursor: pointer;
-    background-color: #8164af;
-    color: #ecf0f1;
+    display: block;
+    margin: 3vh auto;
+    padding: 1.5vh 3vh;
+    font-size: 2vh;
+    background-color: #5a5a79b8;
+    color: white;
     border: none;
-    border-radius: 10px;
-    text-decoration: none;
+    border-radius: 25px;
+    cursor: pointer;
+    font-family: "Roboto Mono", monospace;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-#backButton:hover {
-    background-color: #8164afb4;
+#startButton:hover {
+    transform: translateY(2px);
+    box-shadow: -7px 7px #D15955;
+}
+
+.heading_text {
+    font-family: "Roboto Mono", monospace;
+    font-size: 4vh;
+    margin-top: 3vh;
+    text-align: center;
+    color: white;
+}
+
+p {
+    line-height: 1.6;
+    margin-bottom: 2vh;
 }

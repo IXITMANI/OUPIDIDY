@@ -5,9 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тест на реакцию на звук</title>
     <link rel="stylesheet" type="text/css" href="../css/reaction_test.css">
+    <link rel="stylesheet" type="text/css" href="../css/nav.css">
 </head>
 <body>
-    <a id="backButton" href="../Main.php">Назад</a>
+    <header class="heading" style="background-color: #13141d86;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="../Main.php">домой</a></li>
+            </ul>
+        </nav>
+        <div class="heading_text">тест на звук</div>
+    </header>
     <div id="description">
         <p>На протяжении времени будет проигрываться четкий звук с рандомной периодичностью.</p>
         <p>Ваша задача - нажимать пробел в ответ когда услышите звук.</p>

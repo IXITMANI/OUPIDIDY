@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Тест на реакцию на цвет</title>
     <link rel="stylesheet" type="text/css" href="../css/reaction_test.css">
+    <link rel="stylesheet" type="text/css" href="../css/nav.css">
+
     <style>
         #keyBindings {
             position: absolute;
@@ -17,21 +19,31 @@
     </style>
 </head>
 <body>
-    <a id="backButton" href="../Main.php">Назад</a>
+    <header class="heading" style="background-color: #13141d86;">
+        <nav class="links_header">
+            <ul class="nav_links">
+                <li><a href="../Main.php">домой</a></li>
+            </ul>
+        </nav>
+        <div class="heading_text">тест на цвет</div>
+    </header>
     <div id="description">
         <p>На экране будет появляться круг красного, синего или зелёного цвета.</p>
         <p>Ваша задача - нажимать соответствующую клавишу в ответ на появление круга.</p>
         <p>Система будет считывать среднее время вашей реакции, точность ответов, количество ошибок и пропусков.</p>
         <p>Нажмите "Готов", чтобы начать тест.</p>
+        <div>
+            <p>1 – красный</p>
+            <p>2 – синий</p>
+            <p>3 – зелёный</p>
+        </div>
     </div>
+   
     <div id="circle"></div>
+    
     <button id="startButton">Готов</button>
     <div id="results"></div>
-    <div id="keyBindings">
-        <p>1 – красный</p>
-        <p>2 – синий</p>
-        <p>3 – зелёный</p>
-    </div>
+    
     <script>
         let reactionTimes = [];
         let correctResponses = 0;
