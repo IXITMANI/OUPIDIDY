@@ -31,6 +31,8 @@ if ($stmt->num_rows > 0) {
             header("Location: admin.php");
         } elseif ($role === 'adviser') {
             header("Location: adviser.php");
+        } elseif ($role === 'expert') {
+            header(header: "Location: expert.php");
         } else {
             header("Location: user.php");
         }

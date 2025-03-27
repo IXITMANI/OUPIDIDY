@@ -65,6 +65,29 @@ Itmo Web-programming
     FOREIGN KEY (expert_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (profession_quality_id) REFERENCES profession_qualities(id) ON DELETE CASCADE
     );
+
+    CREATE TABLE IF NOT EXISTS tests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    name VARCHAR(255) NOT NULL,
+    description TEXT NOT NULL,
+    link VARCHAR(255) NOT NULL
+    );
+
+    INSERT INTO tests (name, description, link) VALUES
+    ('Тест на реакцию', 'Проверьте свою скорость реакции на появление круга.', './reaction_test.php'),
+    ('Тест на звук', 'Проверьте свою реакцию на звуковые сигналы.', './sound_test.php'),
+    ('Тест на цвет', 'Проверьте свою реакцию на цвета.', './color_test.php'),
+    ('Тест на числа (звук)', 'Проверьте свою реакцию на сумму чисел, воспроизводимых звуками.', './number_sound_test.php'),
+    ('Тест на числа (экран)', 'Проверьте свою реакцию на сумму чисел, отображаемых на экране.', './number_display_test.php');
+
+    CREATE TABLE IF NOT EXISTS user_tests (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(6) UNSIGNED NOT NULL,
+    test_id INT NOT NULL,
+    assigned_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
+    FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE
+    );
     ```
 
 ### Шаг 3: Размещение файлов проекта

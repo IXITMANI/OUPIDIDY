@@ -159,6 +159,7 @@ while ($row = $professions_result->fetch_assoc()) {
                                     <option value="user" <?php if ($row['role'] == 'user') echo 'selected'; ?>>User</option>
                                     <option value="critic" <?php if ($row['role'] == 'critic') echo 'selected'; ?>>Critic</option>
                                     <option value="adviser" <?php if ($row['role'] == 'adviser') echo 'selected'; ?>>Adviser</option>
+                                    <option value="expert" <?php if ($row['role'] == 'expert') echo 'selected'; ?>>Expert</option>
                                     <option value="admin" <?php if ($row['role'] == 'admin') echo 'selected'; ?>>Admin</option>
                                 </select>
                                 <input type="submit" name="update_role" value="Update" class="update-btn">
