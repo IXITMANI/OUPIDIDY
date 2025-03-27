@@ -1,9 +1,50 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: ../html/login.html");
+    exit();
+}
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "MyUsers";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user_id = $_SESSION['user_id'];
+    $test_name = "Тест на числа (экран)";
+    $mean_reaction_time = $_POST['mean_reaction_time'];
+    $std_dev = $_POST['std_dev'];
+    $accuracy = $_POST['accuracy'];
+    $incorrect_responses = $_POST['incorrect_responses'];
+    $misses = $_POST['misses'];
+
+    $sql = "INSERT INTO test_results (user_id, test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issdiii", $user_id, $test_name, $mean_reaction_time, $std_dev, $accuracy, $incorrect_responses, $misses);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "Результаты успешно сохранены!";
+    exit();
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест на реакцию на числа</title>
+    <title>Тест на числа (экран)</title>
     <link rel="stylesheet" type="text/css" href="../css/reaction_test.css">
     <link rel="stylesheet" type="text/css" href="../css/nav.css">
     <style>
@@ -29,10 +70,10 @@
     <header class="heading" style="background-color: #13141d86;">
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="../Main.php">домой</a></li>
+                <li><a href="./user.php">Назад</a></li>
             </ul>
         </nav>
-        <div class="heading_text">тест на числа</div>
+        <div class="heading_text">Тест на числа (экран)</div>
     </header>
     <div id="description">
         <p>10 раз будут воспроизводиться два числа в виде цифр на экране.</p>
@@ -60,7 +101,7 @@
         let keyBindings = document.getElementById('keyBindings');
         keyBindings.style.display = 'none';
         let numbers = document.getElementById('numbers');
-        let totalSignals = 5; // Установим количество сигналов
+        let totalSignals = 10; // Установим количество сигналов
         let signalsShown = 0;
         let timeout;
         let currentSum;
@@ -76,7 +117,11 @@
             currentSum = num1 + num2;
             numbers.innerHTML = `${num1} + ${num2}`;
             startTime = new Date().getTime();
-            timeout = setTimeout(displayNumbers, Math.random() * 1000 + 500); // Показать следующие числа через случайное время от 500 до 1500 мс
+            timeout = setTimeout(() => {
+                numbers.innerHTML = '';
+                misses++;
+                displayNumbers();
+            }, 2000); // Время на ответ - 2 секунды
         }
 
         function calculateResults() {
@@ -93,9 +138,23 @@
                 <p>Количество ошибок: ${incorrectResponses}</p>
                 <p>Количество пропусков: ${misses}</p>
             `;
+
+            saveResults(mean.toFixed(2), stdDev.toFixed(2), accuracy.toFixed(2), incorrectResponses, misses);
             startButton.style.display = 'block'; // Показать кнопку "Готов"
             description.style.display = 'block'; // Показать описание
-            keyBindings.style.display = 'none'; // Показать назначения клавиш
+            keyBindings.style.display = 'none'; // Скрыть назначения клавиш
+        }
+
+        function saveResults(mean, stdDev, accuracy, incorrectResponses, misses) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "number_display_test.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(`mean_reaction_time=${mean}&std_dev=${stdDev}&accuracy=${accuracy}&incorrect_responses=${incorrectResponses}&misses=${misses}`);
         }
 
         document.body.onkeydown = function(e) {
@@ -109,21 +168,21 @@
                 }
                 numbers.innerHTML = '';
                 clearTimeout(timeout); // Остановить таймер после нажатия
-                setTimeout(displayNumbers, Math.random() * 1000 + 500); // Показать следующие числа через случайное время от 500 до 1500 мс
+                setTimeout(displayNumbers, Math.random() * 1000 + 500); // Показать следующие числа через случайное время
             }
         };
 
         startButton.onclick = function() {
             startButton.style.display = 'none';
             description.style.display = 'none'; // Скрыть описание
-            keyBindings.style.display = 'block'; // Скрыть назначения клавиш
+            keyBindings.style.display = 'block'; // Показать назначения клавиш
             reactionTimes = [];
             correctResponses = 0;
             incorrectResponses = 0;
             misses = 0;
             signalsShown = 0;
             results.innerHTML = ''; // Очистить результаты
-            setTimeout(displayNumbers, Math.random() * 1000 + 500); // Начать показ чисел через случайное время от 500 до 1500 мс
+            setTimeout(displayNumbers, Math.random() * 1000 + 500); // Начать показ чисел через случайное время
         };
     </script>
 </body>

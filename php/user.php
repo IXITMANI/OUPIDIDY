@@ -51,7 +51,8 @@ $conn->close();
     <header>
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="../php/logout.php"><button>Выйти</button></a></li>
+                <li><a href="./result.php">Моя статистика</a></li>
+                <li><a href="../php/logout.php"><button>Назад</button></a></li>
             </ul>
         </nav>
     </header>

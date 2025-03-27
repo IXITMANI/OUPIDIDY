@@ -1,15 +1,56 @@
+<?php
+session_start();
+if (!isset($_SESSION['username'])) {
+    header("Location: ../html/login.html");
+    exit();
+}
+
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "MyUsers";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
+}
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $user_id = $_SESSION['user_id'];
+    $test_name = "Тест на числа (звук)";
+    $mean_reaction_time = $_POST['mean_reaction_time'];
+    $std_dev = $_POST['std_dev'];
+    $accuracy = $_POST['accuracy'];
+    $incorrect_responses = $_POST['incorrect_responses'];
+    $misses = $_POST['misses'];
+
+    $sql = "INSERT INTO test_results (user_id, test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issdiii", $user_id, $test_name, $mean_reaction_time, $std_dev, $accuracy, $incorrect_responses, $misses);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "Результаты успешно сохранены!";
+    exit();
+}
+
+$conn->close();
+?>
+
 <!DOCTYPE html>
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Тест на реакцию на числа</title>
+    <title>Тест на числа (звук)</title>
     <link rel="stylesheet" type="text/css" href="../css/reaction_test.css">
     <link rel="stylesheet" type="text/css" href="../css/nav.css">
     <style>
         #keyBindings {
             position: absolute;
-            bottom: 10px; /* Переместим элемент вниз */
+            bottom: 10px;
             left: 50%;
             transform: translateX(-50%);
             font-size: 18px;
@@ -21,10 +62,10 @@
     <header class="heading" style="background-color: #13141d86;">
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="../Main.php">домой</a></li>
+                <li><a href="./user.php">Назад</a></li>
             </ul>
         </nav>
-        <div class="heading_text">тест на числа</div>
+        <div class="heading_text">Тест на числа (звук)</div>
     </header>
     <div id="description">
         <p>На протяжении 2 минут будут воспроизводиться два числа в виде звуков.</p>
@@ -59,7 +100,7 @@
         let description = document.getElementById('description');
         let keyBindings = document.getElementById('keyBindings');
         keyBindings.style.display = 'none';
-        let totalSignals = 4; // Установим количество сигналов на 120 (примерно 1 сигнал в секунду)
+        let totalSignals = 10; // Установим количество сигналов
         let signalsShown = 0;
         let timeout;
         let sounds = [
@@ -107,9 +148,23 @@
                 <p>Количество ошибок: ${incorrectResponses}</p>
                 <p>Количество пропусков: ${misses}</p>
             `;
+
+            saveResults(mean.toFixed(2), stdDev.toFixed(2), accuracy.toFixed(2), incorrectResponses, misses);
             startButton.style.display = 'block'; // Показать кнопку "Готов"
             description.style.display = 'block'; // Показать описание
-            keyBindings.style.display = 'none'; // Показать назначения клавиш
+            keyBindings.style.display = 'none'; // Скрыть назначения клавиш
+        }
+
+        function saveResults(mean, stdDev, accuracy, incorrectResponses, misses) {
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "number_sound_test.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.onload = function () {
+                if (xhr.status === 200) {
+                    console.log(xhr.responseText);
+                }
+            };
+            xhr.send(`mean_reaction_time=${mean}&std_dev=${stdDev}&accuracy=${accuracy}&incorrect_responses=${incorrectResponses}&misses=${misses}`);
         }
 
         document.body.onkeydown = function(e) {
@@ -122,7 +177,7 @@
                     incorrectResponses++;
                 }
                 clearTimeout(timeout); // Остановить таймер после нажатия
-                setTimeout(playSounds, Math.random() * 1000 + 500); // Проиграть следующий звук через случайное время от 500 до 1500 мс
+                setTimeout(playSounds, Math.random() * 1000 + 500); // Проиграть следующий звук через случайное время
             }
         };
 

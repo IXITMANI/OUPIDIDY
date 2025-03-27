@@ -88,6 +88,18 @@ Itmo Web-programming
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (test_id) REFERENCES tests(id) ON DELETE CASCADE
     );
+    CREATE TABLE IF NOT EXISTS test_results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(6) UNSIGNED NOT NULL,
+    test_name VARCHAR(255) NOT NULL,
+    mean_reaction_time DECIMAL(10, 2) NOT NULL,
+    std_dev DECIMAL(10, 2) NOT NULL,
+    accuracy DECIMAL(5, 2) NOT NULL,
+    incorrect_responses INT NOT NULL,
+    misses INT NOT NULL,
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
     ```
 
 ### Шаг 3: Размещение файлов проекта
