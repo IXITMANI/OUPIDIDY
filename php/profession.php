@@ -39,14 +39,13 @@ if ($result->num_rows > 0) {
 
 $stmt->close();
 
-// SQL-запрос для получения топ 5 качеств профессии с их рейтингами
-$sql = "SELECT q.name, AVG(er.rating) AS average_rating 
+$sql = "SELECT q.name 
         FROM profession_qualities pq 
         JOIN qualities q ON pq.quality_id = q.id 
         LEFT JOIN expert_ratings er ON pq.id = er.profession_quality_id 
         WHERE pq.profession_id = ? 
         GROUP BY q.name 
-        ORDER BY average_rating DESC 
+        ORDER BY AVG(er.rating) ASC 
         LIMIT 5";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $profession_id);
@@ -55,10 +54,7 @@ $result = $stmt->get_result();
 
 $qualities = [];
 while ($row = $result->fetch_assoc()) {
-    $qualities[] = [
-        'name' => $row['name'],
-        'average_rating' => $row['average_rating']
-    ];
+    $qualities[] = $row['name'];
 }
 
 $stmt->close();
@@ -99,7 +95,7 @@ $conn->close();
             <?php if (!empty($qualities)): ?>
                 <ul>
                     <?php foreach ($qualities as $quality): ?>
-                        <li><?php echo htmlspecialchars($quality['name']); ?> - Рейтинг: <?php echo number_format($quality['average_rating'], 2); ?></li>
+                        <li><?php echo htmlspecialchars($quality); ?></li>
                     <?php endforeach; ?>
                 </ul>
             <?php else: ?>
@@ -108,4 +104,4 @@ $conn->close();
         </section>
     </div>  
 </body>
-</html> 
+</html>
