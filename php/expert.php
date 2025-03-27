@@ -89,7 +89,7 @@ $conn->close();
     <header>
         <nav class="links_header">
             <ul class="nav_links">
-                <li><a href="../Main.php">Домой</a></li>
+                <li></li>
                 <li><a href="../php/logout.php"><button>Выйти</button></a></li>
             </ul>
         </nav>
