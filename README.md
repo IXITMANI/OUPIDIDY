@@ -65,7 +65,7 @@ Itmo Web-programming
     FOREIGN KEY (expert_id) REFERENCES users(id) ON DELETE CASCADE,
     FOREIGN KEY (profession_quality_id) REFERENCES profession_qualities(id) ON DELETE CASCADE
     );
-    Ц```
+    ```
 
 ### Шаг 3: Размещение файлов проекта
  Скопируйте файлы проекта в папку `C:\xampp\htdocs\OUPIDIDY\`.
