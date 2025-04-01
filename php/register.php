@@ -60,8 +60,10 @@ if (!isset($_POST['username'], $_POST['password'], $_POST['password_confirm'], $
                 $stmt->bind_param("ssssi", $user, $pass, $email, $phone, $age);
 
                 if ($stmt->execute() === TRUE) {
+                    $new_user_id = $conn->insert_id; // Получаем ID нового пользователя
                     // Сохраняем данные пользователя в сессии
                     session_start();
+                    $_SESSION['user_id'] = $new_user_id; 
                     $_SESSION['username'] = $user;
                     header("Location: user.php");
                     exit();

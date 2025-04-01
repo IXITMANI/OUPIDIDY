@@ -77,15 +77,11 @@ $conn->close();
     <link rel="stylesheet" type="text/css" href="../css/navmain.css">
 </head>
 <body>
-    <?php
-if (empty($test_results)) {
-    echo "<p>Нет данных для отображения.</p>";
-}?>
     <header>
         <nav class="links_header">
             <ul class="nav_links">
                 <li><a href="../php/user.php">Назад</a></li>
-                <li><a href="../php/logout.php"><button>Выйти</button></a></li>
+                <li><a href="../php/logout.php"><button>На главную</button></a></li>
             </ul>
         </nav>
     </header>
@@ -126,7 +122,7 @@ if (empty($test_results)) {
                     </table>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>У вас пока нет результатов тестов.</p>
+                <p>Вы еще не проходили тесты</p>
             <?php endif; ?>
         </section>
     </div>
