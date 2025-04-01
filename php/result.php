@@ -31,9 +31,23 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// Упорядочиваем тесты: "Тест на реакцию" -> "Тест на звук" -> остальные
+$ordered_test_names = [];
+if (in_array("Тест на реакцию", $test_names)) {
+    $ordered_test_names[] = "Тест на реакцию";
+}
+if (in_array("Тест на звук", $test_names)) {
+    $ordered_test_names[] = "Тест на звук";
+}
+foreach ($test_names as $test_name) {
+    if (!in_array($test_name, $ordered_test_names)) {
+        $ordered_test_names[] = $test_name;
+}
+}
+
 // Получение результатов для каждого теста
 $test_results = [];
-foreach ($test_names as $test_name) {
+foreach ($ordered_test_names as $test_name) {
     $sql = "SELECT test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses, completed_at
             FROM test_results
             WHERE user_id = ? AND test_name = ?
@@ -63,6 +77,10 @@ $conn->close();
     <link rel="stylesheet" type="text/css" href="../css/navmain.css">
 </head>
 <body>
+    <?php
+if (empty($test_results)) {
+    echo "<p>Нет данных для отображения.</p>";
+}?>
     <header>
         <nav class="links_header">
             <ul class="nav_links">
@@ -83,8 +101,10 @@ $conn->close();
                             <tr>
                                 <th>Среднее время реакции (мс)</th>
                                 <th>Стандартное отклонение</th>
-                                <th>Точность (%)</th>
+                                <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию"): ?>
+                                    <th>Точность (%)</th>
                                 <th>Ошибки</th>
+                                <?php endif; ?>
                                 <th>Пропуски</th>
                                 <th>Дата выполнения</th>
                             </tr>
@@ -94,8 +114,10 @@ $conn->close();
                                 <tr>
                                     <td><?php echo htmlspecialchars($result['mean_reaction_time']); ?></td>
                                     <td><?php echo htmlspecialchars($result['std_dev']); ?></td>
-                                    <td><?php echo htmlspecialchars($result['accuracy']); ?></td>
-                                    <td><?php echo htmlspecialchars($result['incorrect_responses']); ?></td>
+                                    <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию"): ?>
+                                        <td><?php echo htmlspecialchars($result['accuracy']); ?></td>
+                                        <td><?php echo htmlspecialchars($result['incorrect_responses']); ?></td>
+                                    <?php endif; ?>
                                     <td><?php echo htmlspecialchars($result['misses']); ?></td>
                                     <td><?php echo htmlspecialchars($result['completed_at']); ?></td>
                                 </tr>

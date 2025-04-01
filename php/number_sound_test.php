@@ -89,6 +89,7 @@ $conn->close();
     <audio id="sound7" src="../sounds/sound7.mp3"></audio>
     <audio id="sound8" src="../sounds/sound8.mp3"></audio>
     <audio id="sound9" src="../sounds/sound9.mp3"></audio>
+    <audio id="plusSound" src="../sounds/plus.mp3"></audio>
     <script>
         let reactionTimes = [];
         let correctResponses = 0;
@@ -117,22 +118,29 @@ $conn->close();
         let currentSum;
 
         function playSounds() {
-            if (signalsShown >= totalSignals) {
-                calculateResults();
-                return;
-            }
-            signalsShown++;
-            let num1 = Math.floor(Math.random() * 9) + 1;
-            let num2 = Math.floor(Math.random() * 9) + 1;
-            currentSum = num1 + num2;
-            sounds[num1 - 1].play();
-            sounds[num1 - 1].onended = function() {
-                setTimeout(() => {
-                    sounds[num2 - 1].play();
-                    startTime = new Date().getTime();
-                }, 300); // Воспроизвести второй звук через 300 мс после окончания первого звука
-            };
+        if (signalsShown >= totalSignals) {
+            calculateResults();
+            return;
         }
+        signalsShown++;
+        let num1 = Math.floor(Math.random() * 9) + 1;
+        let num2 = Math.floor(Math.random() * 9) + 1;
+        currentSum = num1 + num2;
+
+        // Проигрываем первый звук
+        sounds[num1 - 1].play();
+        sounds[num1 - 1].onended = function() {
+            // После первого звука проигрываем "плюс"
+            document.getElementById('plusSound').play();
+            document.getElementById('plusSound').onended = function() {
+                // После "плюс" проигрываем второй звук
+                sounds[num2 - 1].play();
+                sounds[num2 - 1].onended = function() {
+                    startTime = new Date().getTime();
+                };
+            };
+        };
+    }
 
         function calculateResults() {
             let sum = reactionTimes.reduce((a, b) => a + b, 0);

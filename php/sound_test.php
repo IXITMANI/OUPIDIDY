@@ -76,36 +76,57 @@ $conn->close();
         let signalsShown = 0;
         let timeout;
 
-        function playSound() {
-            if (signalsShown >= totalSignals) {
-                calculateResults();
-                return;
-            }
-            signalsShown++;
-            sound.play();
-            startTime = new Date().getTime();
-            timeout = setTimeout(() => {
-                misses++;
-                playSound();
-            }, 2000); // Время на ответ - 2 секунды
+        let isWaitingForResponse = false; // Флаг ожидания ответа
+
+    function playSound() {
+    if (signalsShown >= totalSignals) {
+        calculateResults();
+        return;
+    }
+    signalsShown++;
+    console.log("Проигрывается звук. Сигнал номер:", signalsShown); // Логируем номер сигнала
+    sound.play();
+    startTime = new Date().getTime();
+    isWaitingForResponse = true; // Устанавливаем флаг ожидания ответа
+
+    // Таймер для проверки пропуска
+    timeout = setTimeout(() => {
+        if (isWaitingForResponse) {
+            misses++; // Увеличиваем количество пропусков
+            console.log("Пропуск. Общее количество пропусков:", misses); // Логируем пропуски
+            isWaitingForResponse = false; // Сбрасываем флаг
         }
+        playSound();
+    }, 2000); // Время на ответ - 2 секунды
+}
 
-        function calculateResults() {
-            let sum = reactionTimes.reduce((a, b) => a + b, 0);
-            let mean = sum / reactionTimes.length;
-            let variance = reactionTimes.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / reactionTimes.length;
-            let stdDev = Math.sqrt(variance);
-
+    function calculateResults() {
+        if (reactionTimes.length === 0) {
             results.innerHTML = `
-                <p>Среднее время реакции: ${mean.toFixed(2)} мс</p>
-                <p>Стандартное отклонение: ${stdDev.toFixed(2)} мс</p>
+                <p>Вы не успели отреагировать ни на один сигнал.</p>
                 <p>Количество пропусков: ${misses}</p>
             `;
-
-            saveResults(mean.toFixed(2), stdDev.toFixed(2), misses);
+            saveResults(0, 0, misses); // Сохраняем результаты с нулевыми значениями
             startButton.style.display = 'block'; // Показать кнопку "Готов"
             description.style.display = 'block'; // Показать описание
+            return;
         }
+
+        let sum = reactionTimes.reduce((a, b) => a + b, 0);
+        let mean = sum / reactionTimes.length;
+        let variance = reactionTimes.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / reactionTimes.length;
+        let stdDev = Math.sqrt(variance);
+
+        results.innerHTML = `
+            <p>Среднее время реакции: ${mean.toFixed(2)} мс</p>
+            <p>Стандартное отклонение: ${stdDev.toFixed(2)} мс</p>
+            <p>Количество пропусков: ${misses}</p>
+        `;
+
+        saveResults(mean.toFixed(2), stdDev.toFixed(2), misses);
+        startButton.style.display = 'block'; // Показать кнопку "Готов"
+        description.style.display = 'block'; // Показать описание
+    }
 
         function saveResults(mean, stdDev, misses) {
             const xhr = new XMLHttpRequest();
@@ -120,15 +141,29 @@ $conn->close();
         }
 
         document.body.onkeydown = function(e) {
-            if (e.code === 'Space' && !sound.paused) {
-                let reactionTime = new Date().getTime() - startTime;
-                reactionTimes.push(reactionTime);
-                sound.pause();
-                sound.currentTime = 0;
-                clearTimeout(timeout); // Остановить таймер после нажатия
-                setTimeout(playSound, Math.random() * 4500 + 500); // Проиграть следующий звук через случайное время от 500 до 5000 мс
-            }
-        };
+    if (e.code === 'Space' && isWaitingForResponse) {
+        let reactionTime = new Date().getTime() - startTime;
+
+        // Проверяем, прошло ли больше 1 секунды
+        if (reactionTime > 1000) {
+            console.log("Пропуск из-за превышения времени ожидания.");
+            misses++; // Увеличиваем количество пропусков
+            isWaitingForResponse = false; // Сбрасываем флаг ожидания ответа
+            return;
+        }
+
+        reactionTimes.push(reactionTime); // Добавляем время реакции в массив
+        console.log("Время реакции:", reactionTime); // Логируем время реакции
+        console.log("Массив reactionTimes:", reactionTimes); // Логируем массив
+        isWaitingForResponse = false; // Сбрасываем флаг ожидания ответа
+        sound.pause();
+        sound.currentTime = 0;
+        clearTimeout(timeout); // Останавливаем таймер
+        setTimeout(playSound, Math.random() * 4500 + 500); // Проигрываем следующий звук через случайное время
+    } else if (e.code === 'Space') {
+        console.log("Нажатие пробела вне ожидания ответа.");
+    }
+};
 
         startButton.onclick = function() {
             startButton.style.display = 'none';
