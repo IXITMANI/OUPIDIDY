@@ -49,6 +49,7 @@ $conn->close();
 </head>
 <body>
     <header>
+    <div class="empty_space"> </br> </div>
         <nav class="links_header">
             <ul class="nav_links">
                 <li><a href="./result.php">Моя статистика</a></li>
@@ -63,14 +64,14 @@ $conn->close();
             <?php if (!empty($assigned_tests)): ?>
                 <?php foreach ($assigned_tests as $test): ?>
                     <a href="<?php echo $test['link']; ?>">
-                        <article class="profession" style="box-shadow: -7px 7px #D15955;">
+                        <article class="profession" style="box-shadow: -7px 7px #D15955; margin: 2vh">
                             <h3><?php echo htmlspecialchars($test['name']); ?></h3>
                             <p><?php echo htmlspecialchars($test['description']); ?></p>
                         </article>
                     </a>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Вам пока не назначены тесты.</p>
+                <p style="color: #e7e7e7;">Вам пока не назначены тесты.</p>
             <?php endif; ?>
         </section>
     </div>

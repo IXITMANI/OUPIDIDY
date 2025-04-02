@@ -39,10 +39,10 @@ body {
 
 
 #circle {
-    width: 100px;
-    height: 100px;
+    width: 500px;
+    height: 500px;
     background-color: #D15955;
-    border-radius: 50%;
+    border-radius: 100%;
     margin: 5vh auto;
     display: none;
 }

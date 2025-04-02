@@ -75,10 +75,13 @@ $conn->close();
     <title>Результаты тестов</title>
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link rel="stylesheet" type="text/css" href="../css/navmain.css">
+    <link rel="stylesheet" type="text/css" href="../css/result.css">
+
 </head>
 <body>
     <header>
         <nav class="links_header">
+        <div class="empty_space"> </br> </div>
             <ul class="nav_links">
                 <li><a href="../php/user.php">Назад</a></li>
                 <li><a href="../php/logout.php"><button>На главную</button></a></li>
@@ -122,7 +125,7 @@ $conn->close();
                     </table>
                 <?php endforeach; ?>
             <?php else: ?>
-                <p>Вы еще не проходили тесты</p>
+                <p style="color: #e7e7e7">Вы еще не проходили тесты</p>
             <?php endif; ?>
         </section>
     </div>

@@ -84,9 +84,13 @@ $conn->close();
     <title>Назначение тестов</title>
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link rel="stylesheet" type="text/css" href="../css/navmain.css">
+    <link rel="stylesheet" type="text/css" href="../css/expert.css">
+
+    
 </head>
 <body>
     <header>
+    <div class="empty_space"> </br> </div>
         <nav class="links_header">
             <ul class="nav_links">
                 <li></li>

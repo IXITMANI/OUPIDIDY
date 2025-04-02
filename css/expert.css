@@ -1,0 +1,19 @@
+h2, h3, label, option {
+    color: #e7e7e7;
+    padding: 0 2vh;
+}
+
+h3 {
+    margin-top: 5em;
+}
+
+button[type="submit"] {
+    margin-top: 2em;
+    font-size: 1.2vh;
+    background-color: #36852999;
+    color: #ecf0f1;
+    padding: 1vh;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+}
