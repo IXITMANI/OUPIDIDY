@@ -160,6 +160,9 @@ $conn->close();
                 <button type="submit">Сохранить рейтинги</button>
             </form>
         <?php endif; ?>
+        <div class="button_group">
+            <a href="quality_add.php"><button>Добавить качество</button></a>
+        </div>
     </main>
 </body>
 </html>

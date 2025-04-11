@@ -175,7 +175,6 @@ while ($row = $professions_result->fetch_assoc()) {
     </div>
     <div class="button_group">
         <a href="prof_add.php"><button>Добавить профессию</button></a>
-        <a href="quality_add.php"><button>Добавить качество</button></a>
     </div>
 </body>
 </html>

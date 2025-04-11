@@ -1,6 +1,6 @@
 <?php
 session_start();
-if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'admin') {
+if (!isset($_SESSION['username']) || $_SESSION['role'] !== 'adviser') {
     header("Location: login.html");
     exit();
 }
@@ -34,6 +34,36 @@ $qualities_result = $conn->query($sql);
 $qualities = [];
 while ($row = $qualities_result->fetch_assoc()) {
     $qualities[] = $row;
+}
+
+// Обработка добавления нового качества
+if (isset($_POST['add_quality'])) {
+    $new_quality_name = trim($_POST['new_quality_name']);
+
+    if (!empty($new_quality_name)) {
+        // Проверяем, существует ли уже такое качество
+        $sql = "SELECT COUNT(*) FROM qualities WHERE name = ?";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("s", $new_quality_name);
+        $stmt->execute();
+        $stmt->bind_result($count);
+        $stmt->fetch();
+        $stmt->close();
+
+        if ($count == 0) {
+            // Добавляем новое качество
+            $sql = "INSERT INTO qualities (name) VALUES (?)";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("s", $new_quality_name);
+            $stmt->execute();
+            $stmt->close();
+            $message = "Новое качество успешно добавлено.";
+        } else {
+            $message = "Такое качество уже существует.";
+        }
+    } else {
+        $message = "Название качества не может быть пустым.";
+    }
 }
 
 // Обработка назначения качеств профессиям
@@ -104,6 +134,17 @@ $conn->close();
         </div>
     </header>
     <div class="container">
+        <h2>Добавить новое качество</h2>
+        <?php if ($message): ?>
+            <p><?php echo $message; ?></p>
+        <?php endif; ?>
+        <form method="post" action="quality_add.php">
+            <label for="new_quality_name">Название качества:</label>
+            <input type="text" id="new_quality_name" name="new_quality_name" required>
+            </br>
+            <button type="submit" name="add_quality">Добавить качество</button>
+        </form>
+
         <h2>Выберите профессию</h2>
         <form method="get" action="quality_add.php">
             <label for="profession_id">Профессия:</label>
@@ -146,7 +187,7 @@ $conn->close();
         <?php endif; ?>
     </div>
     <div>
-        <a href="admin.php"><button>Назад</button></a>
+        <a href="adviser.php"><button>Назад</button></a>
     </div>
 </body>
 </html>
