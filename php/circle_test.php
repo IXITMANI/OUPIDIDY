@@ -1,19 +1,48 @@
-<!-- filepath: c:\xampp\htdocs\OUPIDIDY\php\test.php -->
 <?php
 session_start();
-if (!isset($_SESSION['username'])) {
-    header("Location: login.html");
-    exit();
 
+// Подключение к базе данных
+$servername = "localhost";
+$username = "root";
+$password = "";
+$dbname = "MyUsers";
+
+$conn = new mysqli($servername, $username, $password, $dbname);
+
+if ($conn->connect_error) {
+    die("Connection failed: " . $conn->connect_error);
 }
 
-// Получаем настройки теста
-$test_duration = $_POST['test_duration'];
-$show_timer = $_POST['show_timer'];
-$show_results = $_POST['show_results'];
-$show_progress = $_POST['show_progress'];
-$speed_increase = $_POST['speed_increase'];
-$speed_interval = $_POST['speed_interval'];
+// Обработка сохранения результатов
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['mean_reaction_time'])) {
+    $user_id = $_SESSION['user_id'] ?? 0; // Получите ID пользователя из сессии
+    $test_name = "Тест с кругом";
+    $mean_reaction_time = $_POST['mean_reaction_time'] ?? 0;
+    $std_dev = $_POST['std_dev'] ?? 0;
+    $accuracy = $_POST['accuracy'] ?? 0;
+    $incorrect_responses = $_POST['incorrect_responses'] ?? 0;
+    $misses = $_POST['misses'] ?? 0;
+
+    $sql = "INSERT INTO test_results (user_id, test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses)
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
+    $stmt = $conn->prepare($sql);
+    $stmt->bind_param("issdiii", $user_id, $test_name, $mean_reaction_time, $std_dev, $accuracy, $incorrect_responses, $misses);
+    $stmt->execute();
+    $stmt->close();
+
+    echo "Результаты успешно сохранены!";
+    exit();
+}
+
+// Получение настроек из сессии
+$testOptions = $_SESSION['test_options'] ?? [
+    'duration' => 2, // Значения по умолчанию
+    'showTimer' => true,
+    'showResultsPerMinute' => false,
+    'showProgress' => true,
+    'speedIncrease' => 5,
+    'speedInterval' => 10
+];
 ?>
 
 <!DOCTYPE html>
@@ -45,29 +74,72 @@ $speed_interval = $_POST['speed_interval'];
             left: 50%;
             transform: translate(-50%, -50%);
         }
+        #testContainer {
+            display: none;
+        }
+        .back-button {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            text-decoration: none;
+            border-radius: 5px;
+            font-size: 14px;
+        }
+        .back-button:hover {
+            background-color: #0056b3;
+        }
     </style>
 </head>
 <body>
-    <h1>Тест</h1>
-    <div class="circle">
-        <div class="dot" id="dot"></div>
+<a href="test_settings.php" class="back-button">Назад</a>
+    <h1>Тест с кругом</h1>
+    <div id="description">
+        <p>На экране будет отображаться круг, по которому движется точка. Ваша задача — нажимать клавишу "Пробел" в момент, когда точка находится в самой верхней точке круга.</p>
+        <p>Если вы нажмете раньше, результат будет положительным, если позже — отрицательным.</p>
+        <button id="startButton">Начать тест</button>
     </div>
-    <p id="timer"></p>
-    <p id="progress"></p>
+
+    <div id="testContainer">
+        <div class="circle">
+            <div class="dot" id="dot"></div>
+        </div>
+        <p id="timer"></p>
+        <p id="progress"></p>
+        <button id="finishButton">Завершить тест</button>
+        <div id="results" style="display: none;"></div>
+    </div>
 
     <script>
-        const duration = <?php echo $test_duration * 60; ?>; // Время теста в секундах
-        const showTimer = <?php echo $show_timer; ?>;
-        const showProgress = <?php echo $show_progress; ?>;
-        const speedIncrease = <?php echo $speed_increase; ?>;
-        const speedInterval = <?php echo $speed_interval; ?>;
+        // Получаем настройки из PHP-сессии
+        const testOptions = <?php echo json_encode($testOptions); ?>;
 
-        let angle = 0;
+        // Инициализация настроек
+        const duration = testOptions.duration * 60; // Перевод минут в секунды
+        const showTimer = testOptions.showTimer;
+        const showProgress = testOptions.showProgress;
+        const speedIncrease = testOptions.speedIncrease;
+        const speedInterval = testOptions.speedInterval;
+
+        let startTime;
         let speed = 1; // Скорость движения точки
+        let angle = 0;
+        let interval;
+        let reactionTimes = [];
+        let misses = 0;
+        let incorrectResponses = 0; // Ошибки
+        let isTestFinished = false; // Флаг для отслеживания завершения теста
+
         const dot = document.getElementById('dot');
         const timerElement = document.getElementById('timer');
         const progressElement = document.getElementById('progress');
-        let startTime = Date.now();
+        const finishButton = document.getElementById('finishButton');
+        const resultsElement = document.getElementById('results');
+        const startButton = document.getElementById('startButton');
+        const description = document.getElementById('description');
+        const testContainer = document.getElementById('testContainer');
 
         // Обновление позиции точки
         function updateDot() {
@@ -84,37 +156,114 @@ $speed_interval = $_POST['speed_interval'];
 
         // Таймер
         function updateTimer() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const remaining = duration - elapsed;
             if (showTimer) {
-                const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                const remaining = duration - elapsed;
                 timerElement.textContent = `Оставшееся время: ${remaining} секунд`;
-                if (remaining <= 0) {
-                    clearInterval(interval);
-                    alert('Тест завершён!');
-                }
+            }
+            if (remaining <= 0) {
+                finishTest();
             }
         }
 
         // Прогресс
         function updateProgress() {
+            const elapsed = Math.floor((Date.now() - startTime) / 1000);
+            const progress = Math.min((elapsed / duration) * 100, 100);
             if (showProgress) {
-                const elapsed = Math.floor((Date.now() - startTime) / 1000);
-                const progress = Math.min((elapsed / duration) * 100, 100);
                 progressElement.textContent = `Прогресс: ${progress.toFixed(2)}%`;
             }
         }
 
+        // Обработка нажатия клавиши пробел
+        document.addEventListener("keydown", (event) => {
+            if (isTestFinished) return; // Если тест завершён, игнорируем нажатие
+
+            if (event.code === "Space") {
+                const currentAngle = angle % 360; // Угол точки
+                let timeDifference;
+
+                // Расчет времени до верхней точки
+                if (currentAngle >= 355 || currentAngle <= 5) {
+                    timeDifference = currentAngle <= 5 ? currentAngle : -(360 - currentAngle);
+                } else if (currentAngle < 355) {
+                    timeDifference = currentAngle;
+                    incorrectResponses++; // Увеличиваем количество ошибок
+                } else {
+                    timeDifference = -(360 - currentAngle);
+                    incorrectResponses++; // Увеличиваем количество ошибок
+                }
+
+                // Запись данных
+                reactionTimes.push(timeDifference); // Время со знаком
+            }
+        });
+// Завершение теста
+function finishTest() {
+    clearInterval(interval);
+    isTestFinished = true; // Устанавливаем флаг завершения теста
+
+    // Рассчитать результаты
+    const meanReactionTime = reactionTimes.length
+        ? reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length
+        : 0;
+
+    const stdDev = reactionTimes.length
+        ? Math.sqrt(
+              reactionTimes.reduce((a, b) => a + Math.pow(b - meanReactionTime, 2), 0) /
+                  reactionTimes.length
+          )
+        : 0;
+
+    const accuracy = reactionTimes.length
+        ? ((reactionTimes.length - incorrectResponses) / reactionTimes.length) * 100
+        : 0;
+
+    // Показать результаты
+    resultsElement.style.display = 'block';
+    resultsElement.innerHTML = `
+        <p>Среднее время реакции (мс): ${meanReactionTime.toFixed(2)}</p>
+        <p>Стандартное отклонение: ${stdDev.toFixed(2)}</p>
+        <p>Точность (%): ${accuracy.toFixed(2)}</p>
+        <p>Ошибки: ${incorrectResponses}</p>
+        <p>Пропуски: ${misses}</p>
+    `;
+
+    // Отправка результатов на сервер
+    const xhr = new XMLHttpRequest();
+    xhr.open("POST", "circle_test.php", true);
+    xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+    xhr.onload = function () {
+        if (xhr.status === 200) {
+            console.log(xhr.responseText);
+        }
+    };
+    xhr.send(
+        `mean_reaction_time=${meanReactionTime.toFixed(2)}&std_dev=${stdDev.toFixed(2)}&accuracy=${accuracy.toFixed(2)}&incorrect_responses=${incorrectResponses}&misses=${misses}`
+    );
+}
         // Ускорение
         setInterval(() => {
             speed += speedIncrease / 100;
         }, speedInterval * 1000);
 
         // Запуск теста
-        const interval = setInterval(() => {
-            updateDot();
-            updateTimer();
-            updateProgress();
-        }, 16); // 60 FPS
+        function startTest() {
+            description.style.display = 'none';
+            testContainer.style.display = 'block';
+            startTime = Date.now();
+            interval = setInterval(() => {
+                updateDot();
+                updateTimer();
+                updateProgress();
+            }, 16); // 60 FPS
+        }
+
+        // Привязка кнопки "Начать тест"
+        startButton.onclick = startTest;
+
+        // Привязка кнопки "Завершить тест"
+        finishButton.onclick = finishTest;
     </script>
 </body>
 </html>
