@@ -1,0 +1,18 @@
+label, h1{
+    color: white;
+}
+
+.container{
+    padding: 2vh;
+    margin-left: 5vh;
+}
+
+button{
+    background-color: rgb(56, 210, 81);
+    color: rgb(34, 34, 34);
+    border: none;
+    font-size: larger;
+    border-radius: 4px;
+    padding: 10px;
+    
+}

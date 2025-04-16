@@ -40,9 +40,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             background-color: #0056b3;
         }
     </style>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/settings.css">
 </head>
 <body>
 <a href="user.php" class="back-button">Назад</a>
+<div class='container'>
     <h1>Настройки теста</h1>
     <form method="post" action="test_settings.php">
         <!-- Выбор времени прохождения теста -->
@@ -80,5 +83,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         <button type="submit">Сохранить настройки и начать тест</button>
     </form>
+    </div> 
 </body>
 </html>

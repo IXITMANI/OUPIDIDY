@@ -53,21 +53,23 @@ $testOptions = $_SESSION['test_options'] ?? [
     <title>Тест</title>
     <style>
         body {
+            color: white;
             text-align: center;
             font-family: Arial, sans-serif;
         }
         .circle {
+            
             width: 300px;
             height: 300px;
-            border: 5px solid black;
+            border: 5px solid white;
             border-radius: 50%;
             margin: 50px auto;
             position: relative;
         }
         .dot {
+            background-color: #FFFFFF;
             width: 20px;
             height: 20px;
-            background-color: red;
             border-radius: 50%;
             position: absolute;
             top: 0;
@@ -78,20 +80,19 @@ $testOptions = $_SESSION['test_options'] ?? [
             display: none;
         }
         .back-button {
+            color: black;
             position: absolute;
             top: 10px;
             right: 10px;
             padding: 10px 15px;
-            background-color: #007bff;
-            color: white;
+            background-color: rgb(56, 210, 81);
             text-decoration: none;
             border-radius: 5px;
             font-size: 14px;
         }
-        .back-button:hover {
-            background-color: #0056b3;
-        }
     </style>
+    <link rel="stylesheet" type="text/css" href="../css/main.css">
+    <link rel="stylesheet" type="text/css" href="../css/settings.css">
 </head>
 <body>
 <a href="test_settings.php" class="back-button">Назад</a>
