@@ -42,7 +42,7 @@ if (in_array("Тест на звук", $test_names)) {
 foreach ($test_names as $test_name) {
     if (!in_array($test_name, $ordered_test_names)) {
         $ordered_test_names[] = $test_name;
-}
+    }
 }
 
 // Получение результатов для каждого теста
@@ -76,12 +76,11 @@ $conn->close();
     <link rel="stylesheet" type="text/css" href="../css/main.css">
     <link rel="stylesheet" type="text/css" href="../css/navmain.css">
     <link rel="stylesheet" type="text/css" href="../css/result.css">
-
 </head>
 <body>
     <header>
         <nav class="links_header">
-        <div class="empty_space"> </br> </div>
+            <div class="empty_space"> </br> </div>
             <ul class="nav_links">
                 <li><a href="../php/user.php">Назад</a></li>
                 <li><a href="../php/logout.php"><button>На главную</button></a></li>
@@ -98,11 +97,13 @@ $conn->close();
                     <table>
                         <thead>
                             <tr>
-                                <th>Среднее время реакции (мс)</th>
-                                <th>Стандартное отклонение</th>
+                                <?php if ($test_name !== "Тест на внимание"): ?>
+                                    <th>Среднее время реакции (мс)</th>
+                                    <th>Стандартное отклонение</th>
+                                <?php endif; ?>
                                 <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию"): ?>
                                     <th>Точность (%)</th>
-                                <th>Ошибки</th>
+                                    <th>Ошибки</th>
                                 <?php endif; ?>
                                 <th>Пропуски</th>
                                 <th>Дата выполнения</th>
@@ -111,8 +112,10 @@ $conn->close();
                         <tbody>
                             <?php foreach ($results as $result): ?>
                                 <tr>
-                                    <td><?php echo htmlspecialchars($result['mean_reaction_time']); ?></td>
-                                    <td><?php echo htmlspecialchars($result['std_dev']); ?></td>
+                                    <?php if ($test_name !== "Тест на внимание"): ?>
+                                        <td><?php echo htmlspecialchars($result['mean_reaction_time']); ?></td>
+                                        <td><?php echo htmlspecialchars($result['std_dev']); ?></td>
+                                    <?php endif; ?>
                                     <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию"): ?>
                                         <td><?php echo htmlspecialchars($result['accuracy']); ?></td>
                                         <td><?php echo htmlspecialchars($result['incorrect_responses']); ?></td>
