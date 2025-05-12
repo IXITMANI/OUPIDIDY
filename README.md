@@ -103,6 +103,15 @@ Itmo Web-programming
     completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
     );
+    CREATE TABLE IF NOT EXISTS memory_test_results (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT(6) UNSIGNED NOT NULL,
+    test_name VARCHAR(255) NOT NULL,
+    stage INT NOT NULL,
+    score INT NOT NULL,
+    completed_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+    );
     ```
 
 ### Шаг 3: Размещение файлов проекта

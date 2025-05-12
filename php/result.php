@@ -31,6 +31,9 @@ while ($row = $result->fetch_assoc()) {
 }
 $stmt->close();
 
+// Добавляем "Игра Плиточки" в список тестов
+$test_names[] = "Игра Плиточки";
+
 // Упорядочиваем тесты: "Тест на реакцию" -> "Тест на звук" -> остальные
 $ordered_test_names = [];
 if (in_array("Тест на реакцию", $test_names)) {
@@ -48,12 +51,21 @@ foreach ($test_names as $test_name) {
 // Получение результатов для каждого теста
 $test_results = [];
 foreach ($ordered_test_names as $test_name) {
-    $sql = "SELECT test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses, completed_at
-            FROM test_results
-            WHERE user_id = ? AND test_name = ?
-            ORDER BY completed_at DESC";
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("is", $user_id, $test_name);
+    if ($test_name === "Игра Плиточки") {
+        $sql = "SELECT difficulty, accuracy, completed_at
+                FROM memory_game_results
+                WHERE user_id = ?
+                ORDER BY completed_at DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("i", $user_id);
+    } else {
+        $sql = "SELECT test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses, completed_at
+                FROM test_results
+                WHERE user_id = ? AND test_name = ?
+                ORDER BY completed_at DESC";
+        $stmt = $conn->prepare($sql);
+        $stmt->bind_param("is", $user_id, $test_name);
+    }
     $stmt->execute();
     $result = $stmt->get_result();
 
@@ -97,11 +109,15 @@ $conn->close();
                     <table>
                         <thead>
                             <tr>
-                                <?php if ($test_name !== "Тест на внимание"): ?>
+                                <?php if ($test_name === "Игра Плиточки"): ?>
+                                    <th>Уровень сложности</th>
+                                    <th>Точность (%)</th>
+                                    <th>Дата выполнения</th>
+                                <?php elseif ($test_name !== "Тест на внимание"): ?>
                                     <th>Среднее время реакции (мс)</th>
                                     <th>Стандартное отклонение</th>
                                 <?php endif; ?>
-                                <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию"): ?>
+                                <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию" && $test_name !== "Игра Плиточки"): ?>
                                     <th>Точность (%)</th>
                                     <th>Ошибки</th>
                                 <?php endif; ?>
@@ -112,15 +128,19 @@ $conn->close();
                         <tbody>
                             <?php foreach ($results as $result): ?>
                                 <tr>
-                                    <?php if ($test_name !== "Тест на внимание"): ?>
+                                    <?php if ($test_name === "Игра Плиточки"): ?>
+                                        <td><?php echo htmlspecialchars($result['difficulty']); ?></td>
+                                        <td><?php echo htmlspecialchars($result['accuracy']); ?></td>
+                                        <td><?php echo htmlspecialchars($result['completed_at']); ?></td>
+                                    <?php elseif ($test_name !== "Тест на внимание"): ?>
                                         <td><?php echo htmlspecialchars($result['mean_reaction_time']); ?></td>
                                         <td><?php echo htmlspecialchars($result['std_dev']); ?></td>
                                     <?php endif; ?>
-                                    <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию"): ?>
+                                    <?php if ($test_name !== "Тест на звук" && $test_name !== "Тест на реакцию" && $test_name !== "Игра Плиточки"): ?>
                                         <td><?php echo htmlspecialchars($result['accuracy']); ?></td>
                                         <td><?php echo htmlspecialchars($result['incorrect_responses']); ?></td>
                                     <?php endif; ?>
-                                    <td><?php echo htmlspecialchars($result['misses']); ?></td>
+                                    <td><?php echo htmlspecialchars($result['misses'] ?? '-'); ?></td>
                                     <td><?php echo htmlspecialchars($result['completed_at']); ?></td>
                                 </tr>
                             <?php endforeach; ?>
