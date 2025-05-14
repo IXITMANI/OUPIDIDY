@@ -53,6 +53,7 @@ $conn->close();
         <nav class="links_header">
             <ul class="nav_links">
                 <li><a href="./result.php">Моя статистика</a></li>
+                <li><a href="./skill_assessment.php">Мои баллы</a></li>
                 <li><a href="../php/logout.php"><button>На главную</button></a></li>
             </ul>
         </nav>

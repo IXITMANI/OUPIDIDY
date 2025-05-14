@@ -43,12 +43,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['results'])) {
     $total = intval($_POST['total'] ?? 0);
 
     $sql = "INSERT INTO test_results (user_id, test_name, mean_reaction_time, std_dev, accuracy, incorrect_responses, misses)
-            VALUES (?, ?, 0, 0, ?, ?, ?, NOW())";
+            VALUES (?, ?, ?, ?, ?, ?, ?)";
     $accuracy = $total > 0 ? ($score / $total) * 100 : 0;
     $incorrect = $total - $score;
     $misses = 0;
+    $mean_reaction_time = 0;
+    $std_dev = 0;
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param("isddii", $user_id, $test_name, $accuracy, $incorrect, $misses);
+   $stmt->bind_param("issdiii", $user_id, $test_name, $mean_reaction_time, $std_dev, $accuracy, $incorrect_responses, $misses);
     $stmt->execute();
     $stmt->close();
     $conn->close();

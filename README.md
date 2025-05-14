@@ -162,6 +162,16 @@ Itmo Web-programming
     ('Классификация', 'Слова: огурец, помидор, капуста, автобус. Что лишнее?', 'огурец', 'помидор', 'капуста', 'автобус', 3),
     ('Классификация', 'Слова: ворона, голубь, воробей, компьютер. Что лишнее?', 'ворона', 'голубь', 'воробей', 'компьютер', 3),
     ('Классификация', 'Слова: молоко, кефир, сыр, велосипед. Что лишнее?', 'молоко', 'кефир', 'сыр', 'велосипед', 3);
+    CREATE TABLE skill_assessment (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    user_id INT,
+    attention_score FLOAT,
+    reaction_score FLOAT,
+    thinking_score FLOAT,
+    total_score FLOAT,
+    passed BOOL,
+    created_at DATETIME DEFAULT CURRENT_TIMESTAMP
+    );
     ```
 
 ### Шаг 3: Размещение файлов проекта
