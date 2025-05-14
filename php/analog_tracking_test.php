@@ -167,29 +167,28 @@ $testOptions = $_SESSION['analog_tracking_options'] ?? [
         });
 
         function finishTest() {
-            clearInterval(interval);
-            isTestFinished = true;
+        clearInterval(interval);
+        isTestFinished = true;
 
-            const meanReactionTime = reactionTimes.length
-                ? reactionTimes.filter(rt => rt.reacted).reduce((a, b) => a + b.time, 0) / reactionTimes.filter(rt => rt.reacted).length
-                : 0;
-            const stdDev = reactionTimes.length
-                ? Math.sqrt(reactionTimes.filter(rt => rt.reacted).reduce((a, b) => a + Math.pow(b.time - meanReactionTime, 2), 0) / reactionTimes.filter(rt => rt.reacted).length)
-                : 0;
+        const meanReactionTime = reactionTimes.length
+            ? reactionTimes.filter(rt => rt.reacted).reduce((a, b) => a + b.time, 0) / reactionTimes.filter(rt => rt.reacted).length
+            : 0;
+        const stdDev = reactionTimes.length
+            ? Math.sqrt(reactionTimes.filter(rt => rt.reacted).reduce((a, b) => a + Math.pow(b.time - meanReactionTime, 2), 0) / reactionTimes.filter(rt => rt.reacted).length)
+            : 0;
 
-            if (showResults) {
-                resultsElement.style.display = 'block';
-                resultsElement.innerHTML = `
-                    <p>Среднее время реакции (мс): ${meanReactionTime.toFixed(2)}</p>
-                    <p>Стандартное отклонение: ${stdDev.toFixed(2)}</p>
-                `;
-            }
+        // Показываем результаты всегда
+        resultsElement.style.display = 'block';
+        resultsElement.innerHTML = `
+            <p>Среднее время реакции (мс): ${meanReactionTime.toFixed(2)}</p>
+            <p>Стандартное отклонение: ${stdDev.toFixed(2)}</p>
+        `;
 
-            const xhr = new XMLHttpRequest();
-            xhr.open("POST", "analog_tracking_test.php", true);
-            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-            xhr.send(`mean_reaction_time=${meanReactionTime.toFixed(2)}&std_dev=${stdDev.toFixed(2)}`);
-        }
+        const xhr = new XMLHttpRequest();
+        xhr.open("POST", "analog_tracking_test.php", true);
+        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+        xhr.send(`mean_reaction_time=${meanReactionTime.toFixed(2)}&std_dev=${stdDev.toFixed(2)}`);
+    }
 
         setInterval(() => {
             speed *= (1 + speedIncrease / 100);
