@@ -24,7 +24,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <link rel="stylesheet" type="text/css" href="../css/main.css">
 </head>
 <body>
-    <a href="../user.php" id="backButton">Назад</a>
+    <a href="./user.php" id="backButton">Назад</a>
     <h1 class="heading_text">Настройки аналогового преследования</h1>
     <form method="POST" id="settingsForm">
         <div id="description">
