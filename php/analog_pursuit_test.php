@@ -82,108 +82,140 @@ $testOptions = $_SESSION['analog_pursuit_options'] ?? [
     <div id="description">
         <p>Используйте стрелки влево и вправо, чтобы удерживать зеленый прицел на белом кружке.</p>
         <button id="startButton">Начать тест</button>
->Get ready to dive into the code! I’ve whipped up two tests based on your requirements: **Analog Tracking** and **Analog Pursuit**. Each has a settings page and a test page, with PHP for backend logic, CSS for styling, and JavaScript for interactivity. The setup is similar to your previous example, storing results in a MySQL database and using your provided CSS for consistency. Below, I’ll outline the key components and include the full code for both tests within `<xaiArtifact>` tags.
-
----
-
-### **Analog Tracking Test**
-
-This test involves a white circle moving left or right on a horizontal track. The user must use the left and right arrow keys to keep the circle centered between two black lines. The reaction time is measured from when the circle starts moving until the user begins counteracting it.
-
-#### **Settings Page (analog_tracking_settings.php)**
-- Allows users to configure:
-  - Test duration (120–2700 seconds).
-  - Show/hide timer, results, and progress.
-  - Speed increase (%) and interval (seconds).
-- Saves settings in the session and redirects to the test page.
-
-#### **Test Page (analog_tracking_test.php)**
-- Displays a 600x100px track with a 50x50px white circle.
-- Two black vertical lines mark the center.
-- The circle moves randomly (10% chance per frame) with a speed between -2 and 2 pixels per frame.
-- Arrow keys adjust the circle’s speed to keep it centered.
-- Tracks reaction times (from movement start to user input) and calculates mean and standard deviation.
-- Saves results to the database (`test_results` table).
-- Supports timer, progress, and result display based on settings.
-- Speed increases by the configured percentage every specified interval.
-
----
-
-### **Analog Pursuit Test**
-
-This test features a white circle moving along a horizontal track, with the user controlling a green crosshair using arrow keys to keep it aligned with the circle. It measures reaction time and pursuit accuracy (time the crosshair overlaps the target).
-
-#### **Settings Page (analog_pursuit_settings.php)**
-- Identical to the tracking test’s settings page, but saves to a different session variable.
-
-#### **Test Page (analog_pursuit_test.php)**
-- Same 600x100px track as the tracking test.
-- A 50x50px white circle (target) moves with random speed changes.
-- A 20x20px green crosshair is controlled via arrow keys.
-- Measures reaction time (from target movement to user input) and accuracy (percentage of time the crosshair overlaps the target).
-- Saves mean reaction time, standard deviation, and accuracy to the database.
-- Supports timer, progress, and result display, with configurable speed increases.
-
----
-
-### **CSS (main.css)**
-I reused your provided `main.css` for styling, ensuring a consistent look with your previous test. The test-specific styles are embedded in the PHP files for simplicity, defining the track, circle, and crosshair appearances.
-
----
-
-### **Database**
-Assumes a MySQL database (`MyUsers`) with a `test_results` table. The schema for the tracking test includes `user_id`, `test_name`, `mean_reaction_time`, and `std_dev`. The pursuit test adds an `accuracy` column.
-
----
-
-### **Code**
-
-Below are the complete files for both tests. I’ve kept the code modular and commented for clarity. The artifact IDs are unique UUIDs, and I’ve ensured the content is wrapped correctly in `<xaiArtifact>` tags.
-
-#### **Analog Tracking: Settings Page**
-<xaiArtifact artifact_id="240b288d-3001-4d8c-afd0-6d3a6ef9d193" artifact_version_id="361a6a3e-8d3f-4093-bcbb-8e4dbe52112d" title="analog_tracking_settings.php" contentType="text/php">
-<?php
-session_start();
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $_SESSION['analog_tracking_options'] = [
-        'duration' => (int)$_POST['duration'],
-        'showTimer' => isset($_POST['showTimer']),
-        'showResults' => isset($_POST['showResults']),
-        'showProgress' => isset($_POST['showProgress']),
-        'speedIncrease' => (float)$_POST['speedIncrease'],
-        'speedInterval' => (int)$_POST['speedInterval']
-    ];
-    header('Location: analog_tracking_test.php');
-    exit();
-}
-?>
-
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Настройки аналогового слежения</title>
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
-</head>
-<body>
-    <a href="../index.php" id="backButton">Назад</a>
-    <h1 class="heading_text">Настройки аналогового слежения</h1>
-    <form method="POST" id="settingsForm">
-        <div id="description">
-            <p>Выберите параметры теста:</p>
-            <label>Время выполнения (секунды, 120–2700):</label>
-            <input type="number" name="duration" min="120" max="2700" value="120" required><br><br>
-            <label><input type="checkbox" name="showTimer" checked> Показывать таймер</label><br>
-            <label><input type="checkbox" name="showResults" checked> Показывать результаты</label><br>
-            <label><input type="checkbox" name="showProgress" checked> Показывать прогресс</label><br>
-            <label>Ускорение движения (на сколько, %):</label>
-            <input type="number" name="speedIncrease" step="0.1" min="0" value="5" required><br><br>
-            <label>Интервал ускорения (секунды):</label>
-            <input type="number" name="speedInterval" min="1" value="10" required><br><br>
-            <button type="submit" id="startButton">Сохранить и начать</button>
+    </div>
+    <div id="testContainer" style="display:none;">
+        <div class="track-container" id="track">
+            <div class="target" id="target"></div>
+            <div class="crosshair" id="crosshair"></div>
         </div>
-    </form>
+        <div id="timer"></div>
+        <div id="progress"></div>
+        <div id="results"></div>
+    </div>
+    <script>
+        const duration = <?php echo (int)$testOptions['duration']; ?>;
+        const showTimer = <?php echo $testOptions['showTimer'] ? 'true' : 'false'; ?>;
+        const showResults = <?php echo $testOptions['showResults'] ? 'true' : 'false'; ?>;
+        const showProgress = <?php echo $testOptions['showProgress'] ? 'true' : 'false'; ?>;
+        const speedIncrease = <?php echo (float)$testOptions['speedIncrease']; ?>;
+        const speedInterval = <?php echo (int)$testOptions['speedInterval']; ?>;
+
+        const track = document.getElementById('track');
+        const target = document.getElementById('target');
+        const crosshair = document.getElementById('crosshair');
+        const timerDiv = document.getElementById('timer');
+        const progressDiv = document.getElementById('progress');
+        const resultsDiv = document.getElementById('results');
+        const startButton = document.getElementById('startButton');
+        const description = document.getElementById('description');
+        const testContainer = document.getElementById('testContainer');
+
+        let targetPos = 300;
+        let crosshairPos = 0;
+        let targetSpeed = 2;
+        let crosshairSpeed = 0;
+        let startTime, interval, speedIntervalId, randomDirInterval, overlapTime = 0, lastOverlap = false, reactionTimes = [], reacted = false, lastMoveTime = 0, frame = 0;
+
+        function randomizeTargetSpeed() {
+            let maxSpeed = 4;
+            let minSpeed = 2;
+            let direction = Math.random() < 0.5 ? -1 : 1;
+            targetSpeed = direction * (minSpeed + Math.random() * (maxSpeed - minSpeed));
+        }
+
+        function startTest() {
+            description.style.display = 'none';
+            testContainer.style.display = 'block';
+            targetPos = 300;
+            crosshairPos = 0;
+            randomizeTargetSpeed();
+            crosshairSpeed = 0;
+            overlapTime = 0;
+            reactionTimes = [];
+            reacted = false;
+            lastMoveTime = Date.now();
+            frame = 0;
+            startTime = Date.now();
+            interval = setInterval(update, 16);
+            speedIntervalId = setInterval(() => {
+                // targetSpeed += targetSpeed * (speedIncrease / 100);
+            }, speedInterval * 1000);
+            randomDirInterval = setInterval(randomizeTargetSpeed, 1000);
+        }
+
+        function update() {
+            frame++;
+            targetPos += targetSpeed;
+            if (targetPos < 0) {
+                targetPos = 0;
+                targetSpeed *= -1;
+            }
+            if (targetPos > 550) {
+                targetPos = 550;
+                targetSpeed *= -1;
+            }
+            target.style.left = targetPos + 'px';
+
+            crosshairPos += crosshairSpeed;
+            if (crosshairPos < 0) crosshairPos = 0;
+            if (crosshairPos > 580) crosshairPos = 580;
+            crosshair.style.left = crosshairPos + 'px';
+
+            let overlap = Math.abs((crosshairPos + 10) - (targetPos + 25)) < 25;
+            if (overlap) {
+                overlapTime += 16;
+            }
+            if (!reacted && (crosshairSpeed !== 0)) {
+                reactionTimes.push(Date.now() - lastMoveTime);
+                reacted = true;
+            }
+            if (!overlap && lastOverlap) {
+                lastMoveTime = Date.now();
+                reacted = false;
+            }
+            lastOverlap = overlap;
+
+            if (showTimer) {
+                let elapsed = Math.floor((Date.now() - startTime) / 1000);
+                timerDiv.textContent = `Оставшееся время: ${duration - elapsed} сек.`;
+            }
+            if (showProgress) {
+                let elapsed = Math.floor((Date.now() - startTime) / 1000);
+                let progress = Math.min((elapsed / duration) * 100, 100);
+                progressDiv.textContent = `Прогресс: ${progress.toFixed(2)}%`;
+            }
+            if ((Date.now() - startTime) / 1000 >= duration) {
+                clearInterval(interval);
+                clearInterval(speedIntervalId);
+                clearInterval(randomDirInterval);
+                finishTest();
+            }
+        }
+
+        document.addEventListener('keydown', function(e) {
+            if (e.code === 'ArrowLeft') crosshairSpeed = -4;
+            if (e.code === 'ArrowRight') crosshairSpeed = 4;
+        });
+        document.addEventListener('keyup', function(e) {
+            if (e.code === 'ArrowLeft' || e.code === 'ArrowRight') crosshairSpeed = 0;
+        });
+
+        function finishTest() {
+            testContainer.style.display = 'none';
+            let mean = reactionTimes.length ? reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length : 0;
+            let stdDev = reactionTimes.length ? Math.sqrt(reactionTimes.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / reactionTimes.length) : 0;
+            let accuracy = (overlapTime / (duration * 1000)) * 100;
+            if (showResults) {
+                resultsDiv.innerHTML = `Среднее время реакции: ${mean.toFixed(2)} мс<br>Стандартное отклонение: ${stdDev.toFixed(2)}<br>Точность слежения: ${accuracy.toFixed(2)}%`;
+                resultsDiv.style.display = 'block';
+            }
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "analog_pursuit_test.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(`mean_reaction_time=${mean}&std_dev=${stdDev}&accuracy=${accuracy}`);
+        }
+
+        startButton.onclick = startTest;
+    </script>
 </body>
 </html>
