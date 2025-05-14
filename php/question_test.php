@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['results'])) {
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">Ф
+    <meta charset="UTF-8">
     <title>Тест на мышление</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }
