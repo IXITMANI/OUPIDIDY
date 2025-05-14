@@ -34,7 +34,6 @@ foreach ($sections as $section) {
     $stmt->close();
 }
 shuffle($questions);
-
 if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['results'])) {
     // Сохраняем результат в БД
     $user_id = $_SESSION['user_id'] ?? 0;
@@ -50,7 +49,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['results'])) {
     $mean_reaction_time = 0;
     $std_dev = 0;
     $stmt = $conn->prepare($sql);
-   $stmt->bind_param("issdiii", $user_id, $test_name, $mean_reaction_time, $std_dev, $accuracy, $incorrect_responses, $misses);
+    $stmt->bind_param("issdiii", $user_id, $test_name, $mean_reaction_time, $std_dev, $accuracy, $incorrect, $misses);
     $stmt->execute();
     $stmt->close();
     $conn->close();
@@ -61,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['results'])) {
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8">Ф
     <title>Тест на мышление</title>
     <style>
         body { font-family: Arial, sans-serif; text-align: center; margin: 20px; }

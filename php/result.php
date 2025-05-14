@@ -113,7 +113,7 @@ $conn->close();
                                     <th>Уровень сложности</th>
                                     <th>Точность (%)</th>
                                     <th>Дата выполнения</th>
-                                <?php elseif ($test_name !== "Тест на внимание"): ?>
+                                <?php elseif ($test_name !== "Тест на внимание" && $test_name !== "Тест на мышление"): ?>
                                     <th>Среднее время реакции (мс)</th>
                                     <th>Стандартное отклонение</th>
                                 <?php endif; ?>
@@ -132,7 +132,7 @@ $conn->close();
                                         <td><?php echo htmlspecialchars($result['difficulty']); ?></td>
                                         <td><?php echo htmlspecialchars($result['accuracy']); ?></td>
                                         <td><?php echo htmlspecialchars($result['completed_at']); ?></td>
-                                    <?php elseif ($test_name !== "Тест на внимание"): ?>
+                                    <?php elseif ($test_name !== "Тест на внимание" && $test_name !== "Тест на мышление"): ?>
                                         <td><?php echo htmlspecialchars($result['mean_reaction_time']); ?></td>
                                         <td><?php echo htmlspecialchars($result['std_dev']); ?></td>
                                     <?php endif; ?>
