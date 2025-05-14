@@ -83,7 +83,9 @@ Itmo Web-programming
     ('Тест с тремя кругами', 'Проверьте свою реакцию на три движущиеся точки.', './three_circle_settings.php'),
     ('Тест на внимание', 'Проверьте свою концентрацию, переключаемость и распределение внимания.', './attention_test_settings.php'),
     ('Тест на память', 'Запомни и повтори рисунок', './memory_test_settings.php'),
-    ('Тест на оценку мышления', 'ответь на вопросы', './question_test_options.php');
+    ('Тест на оценку мышления', 'ответь на вопросы', './question_test_options.php'),
+    ('Тест аналоговое слежение ', 'держи кружок в центре', './analog_tracking_settings.php'),
+    ('Тест аналоговое преследование', 'держи прицел на кружке', './analog_pursuit_settings.php');
 
     CREATE TABLE IF NOT EXISTS user_tests (
     id INT AUTO_INCREMENT PRIMARY KEY,
