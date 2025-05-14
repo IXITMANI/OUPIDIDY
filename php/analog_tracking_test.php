@@ -45,7 +45,6 @@ $testOptions = $_SESSION['analog_tracking_options'] ?? [
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Аналоговое слежение</title>
-    <link rel="stylesheet" type="text/css" href="../css/main.css">
     <style>
         .track-container {
             width: 600px;
@@ -97,7 +96,6 @@ $testOptions = $_SESSION['analog_tracking_options'] ?? [
         const testOptions = <?php echo json_encode($testOptions); ?>;
         const duration = testOptions.duration;
         const showTimer = testOptions.showTimer;
-        const showResults = testOptions.showResults;
         const showProgress = testOptions.showProgress;
         const speedIncrease = testOptions.speedIncrease;
         const speedInterval = testOptions.speedInterval;
@@ -108,6 +106,7 @@ $testOptions = $_SESSION['analog_tracking_options'] ?? [
         let speed = 0;
         let reactionTimes = [];
         let interval;
+        let speedIntervalId;
         let isTestFinished = false;
 
         const timerElement = document.getElementById('timer');
@@ -167,36 +166,38 @@ $testOptions = $_SESSION['analog_tracking_options'] ?? [
         });
 
         function finishTest() {
-        clearInterval(interval);
-        isTestFinished = true;
+            clearInterval(interval);
+            clearInterval(speedIntervalId);
+            isTestFinished = true;
 
-        const meanReactionTime = reactionTimes.length
-            ? reactionTimes.filter(rt => rt.reacted).reduce((a, b) => a + b.time, 0) / reactionTimes.filter(rt => rt.reacted).length
-            : 0;
-        const stdDev = reactionTimes.length
-            ? Math.sqrt(reactionTimes.filter(rt => rt.reacted).reduce((a, b) => a + Math.pow(b.time - meanReactionTime, 2), 0) / reactionTimes.filter(rt => rt.reacted).length)
-            : 0;
+            const reactedArr = reactionTimes.filter(rt => rt.reacted);
+            const meanReactionTime = reactedArr.length
+                ? reactedArr.reduce((a, b) => a + b.time, 0) / reactedArr.length
+                : 0;
+            const stdDev = reactedArr.length
+                ? Math.sqrt(reactedArr.reduce((a, b) => a + Math.pow(b.time - meanReactionTime, 2), 0) / reactedArr.length)
+                : 0;
 
-        // Показываем результаты всегда
-        resultsElement.style.display = 'block';
-        resultsElement.innerHTML = `
-            <p>Среднее время реакции (мс): ${meanReactionTime.toFixed(2)}</p>
-            <p>Стандартное отклонение: ${stdDev.toFixed(2)}</p>
-        `;
+            resultsElement.style.display = 'block';
+            resultsElement.innerHTML = `
+                <p>Среднее время реакции (мс): ${meanReactionTime.toFixed(2)}</p>
+                <p>Стандартное отклонение: ${stdDev.toFixed(2)}</p>
+            `;
 
-        const xhr = new XMLHttpRequest();
-        xhr.open("POST", "analog_tracking_test.php", true);
-        xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
-        xhr.send(`mean_reaction_time=${meanReactionTime.toFixed(2)}&std_dev=${stdDev.toFixed(2)}`);
-    }
+            const xhr = new XMLHttpRequest();
+            xhr.open("POST", "analog_tracking_test.php", true);
+            xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
+            xhr.send(`mean_reaction_time=${meanReactionTime.toFixed(2)}&std_dev=${stdDev.toFixed(2)}`);
+        }
 
-        setInterval(() => {
-            speed *= (1 + speedIncrease / 100);
-        }, speedInterval * 1000);
-
-        function startTest() {
+        startButton.onclick = function() {
             description.style.display = 'none';
             testContainer.style.display = 'block';
+            position = 300;
+            speed = 0;
+            reactionTimes = [];
+            isTestFinished = false;
+            resultsElement.style.display = 'none';
             startTime = Date.now();
             interval = setInterval(() => {
                 randomMovement();
@@ -204,9 +205,11 @@ $testOptions = $_SESSION['analog_tracking_options'] ?? [
                 updateTimer();
                 updateProgress();
             }, 16);
-        }
+            speedIntervalId = setInterval(() => {
+                speed *= (1 + speedIncrease / 100);
+            }, speedInterval * 1000);
+        };
 
-        startButton.onclick = startTest;
         finishButton.onclick = finishTest;
     </script>
 </body>

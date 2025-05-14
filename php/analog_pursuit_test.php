@@ -90,12 +90,11 @@ $testOptions = $_SESSION['analog_pursuit_options'] ?? [
         </div>
         <div id="timer"></div>
         <div id="progress"></div>
-        <div id="results"></div>
     </div>
+    <div id="results"></div>
     <script>
         const duration = <?php echo (int)$testOptions['duration']; ?>;
         const showTimer = <?php echo $testOptions['showTimer'] ? 'true' : 'false'; ?>;
-        const showResults = <?php echo $testOptions['showResults'] ? 'true' : 'false'; ?>;
         const showProgress = <?php echo $testOptions['showProgress'] ? 'true' : 'false'; ?>;
         const speedIncrease = <?php echo (float)$testOptions['speedIncrease']; ?>;
         const speedInterval = <?php echo (int)$testOptions['speedInterval']; ?>;
@@ -126,6 +125,7 @@ $testOptions = $_SESSION['analog_pursuit_options'] ?? [
         function startTest() {
             description.style.display = 'none';
             testContainer.style.display = 'block';
+            resultsDiv.innerHTML = '';
             targetPos = 300;
             crosshairPos = 0;
             randomizeTargetSpeed();
@@ -205,10 +205,11 @@ $testOptions = $_SESSION['analog_pursuit_options'] ?? [
             let mean = reactionTimes.length ? reactionTimes.reduce((a, b) => a + b, 0) / reactionTimes.length : 0;
             let stdDev = reactionTimes.length ? Math.sqrt(reactionTimes.reduce((a, b) => a + Math.pow(b - mean, 2), 0) / reactionTimes.length) : 0;
             let accuracy = (overlapTime / (duration * 1000)) * 100;
-            if (showResults) {
-                resultsDiv.innerHTML = `Среднее время реакции: ${mean.toFixed(2)} мс<br>Стандартное отклонение: ${stdDev.toFixed(2)}<br>Точность слежения: ${accuracy.toFixed(2)}%`;
-                resultsDiv.style.display = 'block';
-            }
+
+            // Показываем результаты всегда
+            resultsDiv.innerHTML = `Среднее время реакции: ${mean.toFixed(2)} мс<br>Стандартное отклонение: ${stdDev.toFixed(2)}<br>Точность слежения: ${accuracy.toFixed(2)}%`;
+            resultsDiv.style.display = 'block';
+
             const xhr = new XMLHttpRequest();
             xhr.open("POST", "analog_pursuit_test.php", true);
             xhr.setRequestHeader("Content-Type", "application/x-www-form-urlencoded");
