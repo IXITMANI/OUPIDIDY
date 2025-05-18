@@ -12,7 +12,7 @@ if ($conn->connect_error) die("Connection failed: " . $conn->connect_error);
 $qualities = [
     'attention' => [
         'name' => 'Внимательность',
-        'tests' => ['attention_test'],
+        'tests' => ['Тест на цвет'],
         'params' => [
             'accuracy' => ['weight' => 0.7, 'min' => 0.6, 'reverse' => false],
             'misses' => ['weight' => 0.3, 'min' => null, 'reverse' => true], // меньше — лучше
@@ -21,7 +21,7 @@ $qualities = [
     ],
     'reaction' => [
         'name' => 'Скорость реакции',
-        'tests' => ['reaction_test'],
+        'tests' => ['Тест на звук'],
         'params' => [
             'mean_reaction_time' => ['weight' => 1.0, 'min' => null, 'reverse' => true], // меньше — лучше
         ],
@@ -29,7 +29,7 @@ $qualities = [
     ],
     'thinking' => [
         'name' => 'Мышление',
-        'tests' => ['thinking_test'],
+        'tests' => ['Тест на мышление'],
         'params' => [
             'accuracy' => ['weight' => 1.0, 'min' => 0.6, 'reverse' => false],
         ],
@@ -37,20 +37,36 @@ $qualities = [
     ]
 ];
 
-// 2. Получаем результаты тестов пользователя
+// 2. Получаем лучшие результаты тестов пользователя (по каждому параметру среди всех тестов)
 $user_id = $_SESSION['user_id'] ?? 0;
 $test_results = [];
 foreach ($qualities as $key => $quality) {
-    foreach ($quality['tests'] as $test_name) {
-        $sql = "SELECT * FROM test_results WHERE user_id=? AND test_name=? ORDER BY id DESC LIMIT 1";
-        $stmt = $conn->prepare($sql);
-        $stmt->bind_param("is", $user_id, $test_name);
-        $stmt->execute();
-        $result = $stmt->get_result();
-        if ($row = $result->fetch_assoc()) {
-            $test_results[$key] = $row;
+    $test_results[$key] = [];
+    foreach ($quality['params'] as $param => $settings) {
+        $best_value = null;
+        foreach ($quality['tests'] as $test_name) {
+            $order = $settings['reverse'] ? "ASC" : "DESC";
+            $sql = "SELECT $param FROM test_results WHERE user_id=? AND test_name=? AND $param IS NOT NULL ORDER BY $param $order LIMIT 1";
+            $stmt = $conn->prepare($sql);
+            $stmt->bind_param("is", $user_id, $test_name);
+            $stmt->execute();
+            $result = $stmt->get_result();
+            if ($row = $result->fetch_assoc()) {
+                if ($best_value === null) {
+                    $best_value = $row[$param];
+                } else {
+                    if ($settings['reverse']) {
+                        if ($row[$param] < $best_value) $best_value = $row[$param];
+                    } else {
+                        if ($row[$param] > $best_value) $best_value = $row[$param];
+                    }
+                }
+            }
+            $stmt->close();
         }
-        $stmt->close();
+        if ($best_value !== null) {
+            $test_results[$key][$param] = $best_value;
+        }
     }
 }
 
