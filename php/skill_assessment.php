@@ -21,7 +21,7 @@ $qualities = [
     ],
     'reaction' => [
         'name' => 'Скорость реакции',
-        'tests' => ['Тест на звук'],
+        'tests' => ['Аналоговое преследование'],
         'params' => [
             'mean_reaction_time' => ['weight' => 1.0, 'min' => null, 'reverse' => true], // меньше — лучше
         ],
@@ -82,8 +82,8 @@ foreach ($qualities as $key => $quality) {
         if ($value === null) continue;
         // Обратный параметр (меньше — лучше)
         if ($settings['reverse']) {
-            // Нормируем: например, если время реакции, то 0.2 сек — отлично, 1.0 сек — плохо
-            $norm = ($param === 'mean_reaction_time') ? min($value / 1.0, 1) : $value;
+            // Для времени реакции переводим из мс в секунды!
+            $norm = ($param === 'mean_reaction_time') ? min($value / 1000, 1) : $value;
             $param_score = 1 - $norm;
         } else {
             $param_score = $value;
@@ -126,6 +126,52 @@ $stmt->bind_param(
 $stmt->execute();
 $stmt->close();
 
+// 6. Определяем подходящую профессию
+$professions = [
+    [
+        'name' => 'Тестировщик',
+        'requirements' => [
+            'attention' => 0.7
+        ]
+    ],
+    [
+        'name' => 'Frontend-разработчик',
+        'requirements' => [
+            'thinking' => 0.7,
+            'reaction' => 0.5
+        ]
+    ],
+    [
+        'name' => 'Backend-разработчик',
+        'requirements' => [
+            'thinking' => 0.8
+        ]
+    ],
+    [
+        'name' => 'Гейм-дизайнер',
+        'requirements' => [
+            'attention' => 0.6,
+            'thinking' => 0.6,
+            'reaction' => 0.6
+        ]
+    ]
+];
+
+$matched_profession = 'Нет подходящей профессии';
+foreach ($professions as $prof) {
+    $ok = true;
+    foreach ($prof['requirements'] as $q => $min) {
+        if (($quality_scores[$q] ?? 0) < $min) {
+            $ok = false;
+            break;
+        }
+    }
+    if ($ok) {
+        $matched_profession = $prof['name'];
+        break;
+    }
+}
+
 $conn->close();
 ?>
 
@@ -166,6 +212,7 @@ $conn->close();
         </tr>
     </table>
     <br>
+    <p><b>Вам подходит профессия:</b> <?= htmlspecialchars($matched_profession) ?></p>
     <a href="user.php"><button>Назад</button></a>
 </body>
 </html>
